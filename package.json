@@ -1,0 +1,36 @@
+{
+  "name": "genjest",
+  "version": "0.0.1",
+  "description": "Json Generator & JSON api testing",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "json-generator",
+    "json-unittest",
+    "json-api-generator"
+  ],
+  "author": "Phuc PNT.",
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "babelify": "^6.3.0",
+    "browserify": "^11.0.1",
+    "gitbook": "^2.4.1",
+    "gulp": "^3.9.0",
+    "gulp-copy": "0.0.2",
+    "gulp-gh-pages": "^0.5.2",
+    "gulp-git": "^1.4.0",
+    "gulp-sourcemaps": "^1.5.2",
+    "jasmine-core": "^2.3.4",
+    "karma": "^0.13.9",
+    "karma-browserify": "^4.3.0",
+    "karma-jasmine": "^0.3.6",
+    "karma-phantomjs-launcher": "^0.2.1",
+    "partialify": "^3.1.5",
+    "phantomjs": "^1.9.18",
+    "vinyl-buffer": "^1.0.0",
+    "vinyl-source-stream": "^1.1.0",
+    "watchify": "^3.4.0"
+  }
+}
