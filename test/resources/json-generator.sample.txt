@@ -1,4 +1,3 @@
-//noinspection BadExpressionStatementJS
 [
   {
     //'repeat:5': {

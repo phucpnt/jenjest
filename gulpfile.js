@@ -14,9 +14,8 @@ var Server = require('karma').Server;
 
 // browserify transformers
 var babel = require('babelify');
-var bShim = require('browserify-shim');
-var cssify = require('cssify');
 var p = require('partialify');
+var stringify = require('stringify');
 
 // documents, gitbook build
 var gitbook = require('gitbook');
@@ -30,11 +29,9 @@ function compile(watch, indexFile, bundleFile) {
           {
             debug: true
           })
-          .external('angular')
+          .transform(stringify(['.txt']))
           .transform(p)
           .transform(babel)
-          .transform(cssify)
-          .transform(bShim)
       ;
   var bundler = watchify(b);
 

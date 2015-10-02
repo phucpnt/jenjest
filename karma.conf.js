@@ -14,7 +14,7 @@ module.exports = function (config) {
 
     browserify: {
       debug: true,
-      transform: ['partialify', 'babelify']
+      transform: ['stringify', 'partialify', 'babelify']
     },
 
 
