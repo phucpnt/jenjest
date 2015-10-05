@@ -4,6 +4,7 @@
 
 
 var _ = require('lodash');
+var objectId = require('./generator/object-id');
 
 
 function attrParser(attrVal) {
@@ -12,10 +13,12 @@ function attrParser(attrVal) {
     return attrVal;
   }
 
-  var pattern = /\{\{(.*?)\}\}/g;
+  var pattern = /\{\{\s*(.*?)\s*\}\}/g;
 
   return attrVal.replace(pattern, (match, p1) => {
-    return p1;
+    var data;
+    eval('try { data= '+p1 + '} catch(e){ data="__undefined--'+p1+'__"}');
+    return data;
   });
 }
 
@@ -26,8 +29,8 @@ export function parser(definedStr) {
     rawObj = rawObj[0];
     results = [];
   }
-  else{
-    results = {}
+  else {
+    results = {};
   }
 
   results = _.mapValues(rawObj, function (val) {
