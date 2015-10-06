@@ -13,8 +13,8 @@ describe('Parser', () => {
     console.log(results);
   });
 
-  it('floating() support', () => {
-    var results = parser.parser(require('../resources/json-generator-1.sample.txt'));
+  it('will not bug out when having undefined method inside generator schema.', () => {
+    var results = parser.parser(require('../resources/json-generator-not-defined-method.sample.txt'));
     console.log(results);
   });
 
