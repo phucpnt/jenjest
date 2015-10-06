@@ -8,10 +8,13 @@ var exampleStr = require('../resources/json-generator.sample.txt');
 
 describe('Parser', () => {
 
-  it('should work normal', () => {
-    console.log(exampleStr);
-    console.log(parser);
+  it('should initialize normal', () => {
     var results = parser.parser(exampleStr);
+    console.log(results);
+  });
+
+  it('floating() support', () => {
+    var results = parser.parser(require('../resources/json-generator-1.sample.txt'));
     console.log(results);
   });
 
