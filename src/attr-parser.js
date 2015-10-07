@@ -8,9 +8,10 @@
 var _ = require('lodash');
 var objectId = require('./generator/object-id');
 var index = require('./generator/index');
+var float = require('./generator/float');
 
 var genPattern = /\{\{\s*(.*?)\s*\}\}/g;
-var fnNamePattern = /(.+)\(.*?\)/i;
+var fnNamePattern = /(.+?)\(.*?\)/i;
 
 
 function attrParser(attrVal) {
@@ -22,8 +23,9 @@ function attrParser(attrVal) {
   return attrVal.replace(genPattern, (match, p1) => {
     var data;
     var fnName = p1.match(fnNamePattern);
-    if(typeof fnName[1] !== 'function'){
-      return "__undefined--"+p1+"__";
+
+    if (eval('typeof (' + fnName[1] + ') !== "function"')) {
+      return "__undefined--" + p1 + "__";
     }
     else {
       eval('data= ' + p1 + ';');
