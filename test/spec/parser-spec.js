@@ -3,20 +3,25 @@
  */
 
 var parser = require('../../src/index');
-var exampleStr = require('../resources/json-generator.js.sample');
+var exampleStr = require('../resources/json-generator.jsample.txt');
 
 
 describe('Parser', () => {
 
-  describe('Parsing function', () => {
+  fdescribe('Parsing function', () => {
     it('should initialize normal', () => {
       var results = parser(exampleStr);
       console.log(results);
     });
 
     it('will not bug out when having undefined method inside generator schema.', () => {
-      var results = parser(require('../resources/json-generator-not-defined-method.sample'));
+      var results = parser(require('../resources/json-generator-not-defined-method.jsample.txt'));
       console.log(results);
+    });
+
+    it('support repeater', () => {
+      var results = parser(require('../resources/repeat-simple.jsample.txt'));
+      console.log(JSON.stringify(results, null, 2));
     });
 
   });

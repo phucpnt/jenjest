@@ -12,6 +12,7 @@ var float = require('./generator/float');
 
 var genPattern = /\{\{\s*(.*?)\s*\}\}/g;
 var fnNamePattern = /(.+?)\(.*?\)/i;
+var repeatPattern = /repeat\((\d+)\)/i;
 
 
 function attrParser(attrVal) {
@@ -34,9 +35,18 @@ function attrParser(attrVal) {
   });
 }
 
+function repeater(times, attrVal) {
+  return _.times(times, () => {
+    return _.mapValues(attrVal, function (val) {
+      return attrParser(val);
+    });
+  });
+}
+
 module.exports = function parser(definedStr) {
   var rawObj;
   eval('rawObj = (' + definedStr + ');');
+
   var results;
   if (_.isArray(rawObj)) {
     rawObj = rawObj[0];
@@ -46,9 +56,17 @@ module.exports = function parser(definedStr) {
     results = {};
   }
 
-  results = _.mapValues(rawObj, function (val) {
-    return attrParser(val);
-  });
+  var keys = Object.keys(rawObj);
+  if (keys.length === 1 && repeatPattern.test(keys[0])) {
+    var times = keys[0].match(repeatPattern)[1];
+    console.log('ARRAY', rawObj[keys[0]]);
+    results = results.concat(repeater(times, rawObj[keys[0]]));
+  }
+  else {
+    results = _.mapValues(rawObj, function (val) {
+      return attrParser(val);
+    });
+  }
 
   return results;
-}
+};

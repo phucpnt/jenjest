@@ -29,9 +29,11 @@ function compile(watch, indexFile, bundleFile) {
           {
             debug: true
           })
-          .transform(stringify(['.txt']))
+          .transform(stringify(['.js.sample']))
           .transform(p)
-          .transform(babel)
+          .transform(babel.configure({
+            extensions: [".js"]
+          }))
       ;
   var bundler = watchify(b);
 

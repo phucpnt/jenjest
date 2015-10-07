@@ -23,8 +23,6 @@ module.exports = function () {
  *
  */
 
-if (!document) var document = { cookie: '' }; // fix crashes on node
-
 /**
  * Javascript class that mimics how WCF serializes a object of type MongoDB.Bson.ObjectId
  * and converts between that format and the standard 24 character representation.
