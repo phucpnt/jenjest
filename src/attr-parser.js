@@ -34,7 +34,7 @@ function attrParser(attrVal) {
   });
 }
 
-export function parser(definedStr) {
+module.exports = function parser(definedStr) {
   var rawObj;
   eval('rawObj = (' + definedStr + ');');
   var results;
