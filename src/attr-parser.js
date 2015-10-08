@@ -61,7 +61,7 @@ function attrParser(attrVal, times = 0) {
   }
   else {
     return _.times(times, () => {
-      return _attrParser(attrVal)
+      return _attrParser(attrVal);
     });
   }
 
