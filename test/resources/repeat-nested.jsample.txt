@@ -1,0 +1,17 @@
+//noinspection BadExpressionStatementJS
+[
+  {
+    'repeat(5)': {
+      _id: '{{objectId().$}}',
+      _id1: objectId().$,
+      foo: '{{undefined_generator_method().more().more(2).$}}',
+      bar: '{{undefined_generator_method(12345).more().more(2).$}}',
+      'repeat(10)': {
+        _id: '{{objectId().$}}'
+      }
+    },
+    'repeat(10)': {
+      _id: '{{objectId().$}}'
+    }
+  }
+]

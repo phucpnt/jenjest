@@ -9,6 +9,13 @@ var exampleStr = require('../resources/json-generator.jsample.txt');
 describe('Parser', () => {
 
   fdescribe('Parsing function', () => {
+    fit('repeater parser', () => {
+      var repeaterParse = require('../../src/generator/repeat');
+      var source = require('../resources/repeat-nested.jsample.txt');
+      console.log(source);
+      console.log(repeaterParse(source));
+    });
+
     it('should initialize normal', () => {
       var results = parser(exampleStr);
       console.log(results);

@@ -37,6 +37,7 @@
   "dependencies": {
     "faker": "^3.0.1",
     "lodash": "^3.10.1",
-    "numeral": "^1.5.3"
+    "numeral": "^1.5.3",
+    "xregexp": "^3.0.0"
   }
 }

@@ -2,10 +2,15 @@
  * Created by Phuc on 10/1/2015.
  */
 
+var _ = require('lodash');
+var XRegExp = require('xregexp');
+
 /**
  * all available generator should be declared here
+ * TODO: delay evaluation for function defined in schema on repeater
  */
-var _ = require('lodash');
+
+
 var objectId = require('./generator/object-id');
 var index = require('./generator/index');
 var float = require('./generator/float');
@@ -31,6 +36,7 @@ function attrParser(attrVal) {
     else {
       eval('data= ' + p1 + ';');
     }
+
     return data;
   });
 }
@@ -59,7 +65,6 @@ module.exports = function parser(definedStr) {
   var keys = Object.keys(rawObj);
   if (keys.length === 1 && repeatPattern.test(keys[0])) {
     var times = keys[0].match(repeatPattern)[1];
-    console.log('ARRAY', rawObj[keys[0]]);
     results = results.concat(repeater(times, rawObj[keys[0]]));
   }
   else {
