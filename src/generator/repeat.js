@@ -45,16 +45,18 @@ function repeaterSourceParser(code) {
   while (!end) {
     var result = repeaterBlockParser(code);
 
-    code = result.parsedCode;
+    if (result.parsedCode) {
+      code = result.parsedCode;
+    }
     parsedPos = result.nextSearchPos;
-    console.log(result, parsedPos);
 
     if (!parsedPos || parsedPos >= code.length) {
       end = true;
     }
   }
 
-  return code;
+  return {code: code, repeaterBlocks: repeaterBlocks};
 }
 
 module.exports = repeaterSourceParser;
+

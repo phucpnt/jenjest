@@ -9,16 +9,22 @@ var exampleStr = require('../resources/json-generator.jsample.txt');
 describe('Parser', () => {
 
   fdescribe('Parsing function', () => {
+    //fit('repeater parser', () => {
+    //  var repeaterParse = require('../../src/generator/repeat');
+    //  var source = require('../resources/repeat-nested.jsample.txt');
+    //  console.log(repeaterParse(source));
+    //});
+
     fit('repeater parser', () => {
-      var repeaterParse = require('../../src/generator/repeat');
+      var parser= require('../../src/attr-parser');
       var source = require('../resources/repeat-nested.jsample.txt');
-      console.log(source);
-      console.log(repeaterParse(source));
+      var results = parser(source);
+      console.log(JSON.stringify(results, null, 2));
     });
 
     it('should initialize normal', () => {
       var results = parser(exampleStr);
-      console.log(results);
+      console.log(JSON.stringify({}, null, 2));
     });
 
     it('will not bug out when having undefined method inside generator schema.', () => {
