@@ -16,9 +16,9 @@ describe('Parser', () => {
     //});
 
     fit('repeater parser', () => {
-      var parser= require('../../src/attr-parser');
+      var attrParser= require('../../src/attr-parser');
       var source = require('../resources/repeat-nested.jsample.txt');
-      var results = parser(source);
+      var results = attrParser(source);
       console.log(JSON.stringify(results, null, 2));
     });
 

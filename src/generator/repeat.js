@@ -5,7 +5,7 @@
 var repeaterBlocks = [];
 
 function makePlaceHolder(index) {
-  return '__repeater(' + index + ')';
+  return index;
 }
 
 function repeaterBlockParser(code) {

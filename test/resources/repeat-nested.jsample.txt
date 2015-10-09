@@ -1,13 +1,13 @@
 //noinspection BadExpressionStatementJS
 [
   {
-    'repeat(5)': {
+    'repeat(2)': {
       _id: '{{objectId().$}}',
       _id1: objectId().$,
       foo: '{{undefined_generator_method().more().more(2).$}}',
       bar: [{
-        'repeat(10)': {
-          _id: '{{objectId().$}}'
+        'repeat(2)': {
+          _id: '{{index().$}}'
         }
       }]
     }

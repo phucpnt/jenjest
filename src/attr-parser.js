@@ -18,29 +18,26 @@ var repeaterParser = require('./generator/repeat');
 var repeaterBlocks = [];
 function __repeater(index) {
   var codeBlock = repeaterBlocks[index];
+  console.log('>>> REPEAT CALL', codeBlock);
   return parser(codeBlock);
 }
 
 var genPattern = /\{\{\s*(.*?)\s*\}\}/g;
 var fnNamePattern = /(.+?)\(.*?\)/i;
-var repeatPattern = /repeat\((\d+)\)/i;
-
-function repeater(times, attrVal) {
-  return _.times(times, () => {
-    return _.mapValues(attrVal, function (val) {
-      return attrParser(val);
-    });
-  });
-}
+var repeatPattern = /repeat\s*\(\s*(\d+)\s*\)\s*/i;
 
 function _attrParser(attrVal) {
   if (!_.isString(attrVal)) {
     return attrVal;
   }
 
+  console.log('ATTR PARSER', attrVal);
+
   return attrVal.replace(genPattern, (match, p1) => {
     var data;
     var fnName = p1.match(fnNamePattern);
+
+    console.log('ATTR PARSER', p1);
 
     if (eval('typeof (' + fnName[1] + ') !== "function"')) {
       return "__undefined--" + p1 + "__";
@@ -54,50 +51,70 @@ function _attrParser(attrVal) {
 }
 
 
-function attrParser(attrVal, times = 0) {
+function attrParser(attrVal, key, parent) {
 
-  if (!times) {
-    return _attrParser(attrVal);
+  if (_.isArray(attrVal)) {
+    var results = [];
+    attrVal = attrVal[0];
+    var keys = Object.keys(attrVal);
+    if (keys.length === 1 && repeatPattern.test(keys[0])) {
+      var key = keys[0];
+      var repeaterIndex = attrVal[key];
+      console.log('REPEAT KEY', key);
+      var num = key.match(repeatPattern)[1];
+      for(var i = 0; i < num; i++) {
+        console.log(attrVal[key]);
+        results = results.concat(__repeater(repeaterIndex));
+      }
+      return results;
+    }
   }
-  else {
-    return _.times(times, () => {
-      return _attrParser(attrVal);
-    });
+  else{
+    return _attrParser(attrVal);
   }
 
 }
 
 function parser(definedStr) {
 
-  var parsedStr = repeaterParser(definedStr);
+  var parsedResult = repeaterParser(definedStr);
 
-  if (parsedStr.code) {
-    repeaterBlocks = parsedStr.repeaterBlocks;
+  if (parsedResult.code) {
+    repeaterBlocks = parsedResult.repeaterBlocks;
+    definedStr = parsedResult.code;
   }
+
+  console.log(definedStr);
 
   var rawObj;
   eval('rawObj = (' + definedStr + ');');
 
-  var results;
-  if (_.isArray(rawObj)) {
-    rawObj = rawObj[0];
-    results = [];
-  }
-  else {
-    results = {};
-  }
-
-  var keys = Object.keys(rawObj);
-  if (keys.length === 1 && repeatPattern.test(keys[0])) {
-    var times = keys[0].match(repeatPattern)[1];
-    results = results.concat(attrParser(rawObj[keys[0]], times));
-  } else {
-    results = _.mapValues(rawObj, function (val) {
-      return attrParser(val);
+  //var results;
+  ////if (_.isArray(rawObj)) {
+  ////  return attrParser(rawObj, null, null);
+  ////}
+  ////else {
+  ////  results = {};
+  ////}
+  ////
+  ////
+  ////var keys = Object.keys(rawObj);
+  ////if (keys.length === 1 && repeatPattern.test(keys[0])) {
+  ////  var times = keys[0].match(repeatPattern)[1];
+  ////  results = results.concat(attrParser(rawObj[keys[0]], keys[0], results, times));
+  ////} else {
+  ////  results = _.mapValues(rawObj, function (val, key) {
+  ////    return attrParser(val, key, results);
+  ////  });
+  ////}
+  if(!_.isArray(rawObj)){
+    return _.mapValues(rawObj, function(val, key){
+      return attrParser(val, key);
     });
   }
-
-  return results;
+  else {
+    return attrParser(rawObj);
+  }
 }
 
 module.exports = parser;
