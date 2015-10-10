@@ -5,11 +5,25 @@
       _id: '{{objectId().$}}',
       _id1: objectId().$,
       foo: '{{undefined_generator_method().more().more(2).$}}',
-      bar: [{
+      bar: [{ // array with nested repeated obj
         'repeat(2)': {
-          _id: '{{index().$}}'
+          _id: '{{index().$}}',
+          foo2: [{
+            'repeat(2)':{
+              foo: objectId().$
+            }
+          }]
         }
-      }]
+      }],
+      qux: [ // normal array
+        {
+          _id: objectId().$,
+        },
+        {
+          _id: '{{objectId().$}}',
+        },
+        objectId().$
+      ]
     }
   }
 ]

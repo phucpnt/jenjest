@@ -9,16 +9,19 @@ var exampleStr = require('../resources/json-generator.jsample.txt');
 describe('Parser', () => {
 
   fdescribe('Parsing function', () => {
-    //fit('repeater parser', () => {
-    //  var repeaterParse = require('../../src/generator/repeat');
-    //  var source = require('../resources/repeat-nested.jsample.txt');
-    //  console.log(repeaterParse(source));
-    //});
+    it('normal array should work', () => {
+      var attrParser= require('../../src/attr-parser');
+      var source = require('../resources/array-normal.jsample.txt');
+      var results = attrParser(source);
 
-    fit('repeater parser', () => {
+      console.log(JSON.stringify(results, null, 2));
+    });
+
+    it('repeater parser', () => {
       var attrParser= require('../../src/attr-parser');
       var source = require('../resources/repeat-nested.jsample.txt');
       var results = attrParser(source);
+
       console.log(JSON.stringify(results, null, 2));
     });
 

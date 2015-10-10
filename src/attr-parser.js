@@ -18,7 +18,6 @@ var repeaterParser = require('./generator/repeat');
 var repeaterBlocks = [];
 function __repeater(index) {
   var codeBlock = repeaterBlocks[index];
-  console.log('>>> REPEAT CALL', codeBlock);
   return parser(codeBlock);
 }
 
@@ -31,13 +30,10 @@ function _attrParser(attrVal) {
     return attrVal;
   }
 
-  console.log('ATTR PARSER', attrVal);
-
   return attrVal.replace(genPattern, (match, p1) => {
     var data;
     var fnName = p1.match(fnNamePattern);
 
-    console.log('ATTR PARSER', p1);
 
     if (eval('typeof (' + fnName[1] + ') !== "function"')) {
       return "__undefined--" + p1 + "__";
@@ -50,26 +46,38 @@ function _attrParser(attrVal) {
   });
 }
 
+function arrayContainsNestedObj(arr) {
+  return arr[0] && _.isPlainObject(arr[0]) && repeatPattern.test(Object.keys(arr[0])[0]);
+}
 
-function attrParser(attrVal, key, parent) {
+
+function attrParser(attrVal) {
 
   if (_.isArray(attrVal)) {
-    var results = [];
-    attrVal = attrVal[0];
-    var keys = Object.keys(attrVal);
-    if (keys.length === 1 && repeatPattern.test(keys[0])) {
+    if (arrayContainsNestedObj(attrVal)) {
+      var results = [];
+      var nestedVal = attrVal[0];
+      var keys = Object.keys(nestedVal);
       var key = keys[0];
-      var repeaterIndex = attrVal[key];
-      console.log('REPEAT KEY', key);
+      var repeaterIndex = nestedVal[key];
       var num = key.match(repeatPattern)[1];
-      for(var i = 0; i < num; i++) {
-        console.log(attrVal[key]);
+      for (var i = 0; i < num; i++) {
         results = results.concat(__repeater(repeaterIndex));
       }
       return results;
     }
+    else {
+      return _.map(attrVal, (val) => {
+        return attrParser(val);
+      });
+    }
   }
-  else{
+  else if (_.isPlainObject(attrVal)) {
+    return _.mapValues(attrVal, (val) => {
+      return attrParser(val)
+    });
+  }
+  else {
     return _attrParser(attrVal);
   }
 
@@ -84,31 +92,13 @@ function parser(definedStr) {
     definedStr = parsedResult.code;
   }
 
-  console.log(definedStr);
-
   var rawObj;
   eval('rawObj = (' + definedStr + ');');
 
-  //var results;
-  ////if (_.isArray(rawObj)) {
-  ////  return attrParser(rawObj, null, null);
-  ////}
-  ////else {
-  ////  results = {};
-  ////}
-  ////
-  ////
-  ////var keys = Object.keys(rawObj);
-  ////if (keys.length === 1 && repeatPattern.test(keys[0])) {
-  ////  var times = keys[0].match(repeatPattern)[1];
-  ////  results = results.concat(attrParser(rawObj[keys[0]], keys[0], results, times));
-  ////} else {
-  ////  results = _.mapValues(rawObj, function (val, key) {
-  ////    return attrParser(val, key, results);
-  ////  });
-  ////}
-  if(!_.isArray(rawObj)){
-    return _.mapValues(rawObj, function(val, key){
+  return attrParser(rawObj);
+
+  if (!_.isArray(rawObj)) {
+    return _.mapValues(rawObj, function (val, key) {
       return attrParser(val, key);
     });
   }
@@ -117,4 +107,4 @@ function parser(definedStr) {
   }
 }
 
-module.exports = parser;
+module.exports.parse = parser;

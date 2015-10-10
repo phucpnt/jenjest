@@ -1,0 +1,16 @@
+//noinspection BadExpressionStatementJS
+[
+  {
+      _id: '{{objectId().$}}',
+      _id1: objectId().$,
+      qux: [ // normal array
+        {
+          _id: objectId().$,
+        },
+        {
+          _id: '{{objectId().$}}',
+        },
+        objectId().$
+      ]
+  }
+]
