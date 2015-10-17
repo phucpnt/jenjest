@@ -9,22 +9,6 @@ var exampleStr = require('../resources/json-generator.jsample.txt');
 describe('Parser', () => {
 
   fdescribe('Parsing function', () => {
-    it('normal array should work', () => {
-      var attrParser= require('../../src/attr-parser');
-      var source = require('../resources/array-normal.jsample.txt');
-      var results = attrParser(source);
-
-      console.log(JSON.stringify(results, null, 2));
-    });
-
-    it('repeater parser', () => {
-      var attrParser= require('../../src/attr-parser');
-      var source = require('../resources/repeat-nested.jsample.txt');
-      var results = attrParser(source);
-
-      console.log(JSON.stringify(results, null, 2));
-    });
-
     it('should initialize normal', () => {
       var results = parser(exampleStr);
       console.log(JSON.stringify({}, null, 2));
@@ -40,6 +24,21 @@ describe('Parser', () => {
       console.log(JSON.stringify(results, null, 2));
     });
 
+    it('normal array should work', () => {
+      var attrParser= require('../../src/attr-parser');
+      var source = require('../resources/array-normal.jsample.txt');
+      var results = attrParser.parse(source);
+
+      console.log(JSON.stringify(results, null, 2));
+    });
+
+    it('repeater parser', () => {
+      var attrParser= require('../../src/attr-parser');
+      var source = require('../resources/repeat-nested.jsample.txt');
+      var results = attrParser.parse(source);
+
+      console.log(JSON.stringify(results, null, 2));
+    });
   });
 
   describe('generator: float().max().min().decimal().format()', () => {
