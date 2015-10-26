@@ -12,7 +12,7 @@ var _ = require('lodash');
 var objectId = require('./generator/object-id');
 var index = require('./generator/index');
 var float = require('./generator/float');
-var repeaterParser = require('./generator/repeat');
+var repeaterParser = require('./directives/repeat');
 
 
 var repeaterBlocks = [];
@@ -97,14 +97,6 @@ function parser(definedStr) {
 
   return attrParser(rawObj);
 
-  if (!_.isArray(rawObj)) {
-    return _.mapValues(rawObj, function (val, key) {
-      return attrParser(val, key);
-    });
-  }
-  else {
-    return attrParser(rawObj);
-  }
 }
 
 module.exports.parse = parser;
