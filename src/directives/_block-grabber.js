@@ -2,12 +2,18 @@
  * Created by Phuc on 10/26/2015.
  */
 
-function createBlockGrabber(regexLabel) {
+/**
+ *
+ * @param startRegex {RegExp}
+ * @param makePlaceHolder {Function}
+ * @returns {{parse: parse, getCodeBlocks: getCodeBlocks}}
+ */
+function createBlockGrabber(startRegex, makePlaceHolder) {
 
   var codeBlocks = [];
+  var regexBlockStart = startRegex;
 
   function parseOne(code) {
-    var regexBlockStart = new RegExp("'" + regexLabel + "'\s*:\s*\{", 'gi');
     var matched = regexBlockStart.exec(code);
     if (matched == null) {
       return {};
@@ -43,21 +49,25 @@ function createBlockGrabber(regexLabel) {
 
   function parse(code) {
 
+    var parsedSrc = code;
+
     var parsedPos = 0;
     var end = false;
 
     while (!end) {
-      var result = parseOne(code);
+      var result = parseOne(parsedSrc);
 
       if (result.parsedCode) {
-        code = result.parsedCode;
+        parsedSrc = result.parsedCode;
       }
       parsedPos = result.nextSearchPos;
 
-      if (!parsedPos || parsedPos >= code.length) {
+      if (!parsedPos || parsedPos >= parsedSrc.length) {
         end = true;
       }
     }
+
+    return parsedSrc;
   }
 
   return {parse, getCodeBlocks};

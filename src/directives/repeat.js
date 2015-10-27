@@ -2,61 +2,70 @@
  * Created by Phuc on 10/1/2015.
  */
 
+/**
+ *
+ * code will transform the following:
+ * ```
+ * [
+ *   {
+ *     'repeat:5': {
+ *       field1: '...',
+ *       field2: '...',
+ *     }
+ *   }
+ * ]
+ * ```
+ * into:
+ *
+ * ```
+ *   [].concat(_repeat1(), {});
+ *
+ *   function _repeat1() {
+ *    return {
+ *      field1: '...',
+ *      field2: '...'
+ *    }
+ *   }
+ * ```
+ *
+ **/
+
+var makeBlockParser = require('./_block-grabber');
 var repeaterBlocks = [];
 
-function makePlaceHolder(index) {
-  return index;
-}
+function directive(code) {
 
-function repeaterBlockParser(code) {
-  var repeatBlockStart = /'repeat\(\d+\)'\s*:\s*\{/ig;
-  var matched = repeatBlockStart.exec(code);
-  if (matched == null) {
-    return {};
+  var repeatIndicatorRegex = /'repeat\(\d+\)'\s*:\s*\{/ig;
+  var repeatArrayRegex = /\['repeat\((\d+)\)'\s*:\s*(\d+)\s*\]/ig;
+  var parsedBlocks = [];
+  var parser = makeBlockParser(repeatIndicatorRegex, makePlaceHolder);
+
+  function makePlaceHolder(index) {
+    return index;
   }
-  var start = 1;
-  var startBlock, searchPos;
-  startBlock = searchPos = repeatBlockStart.lastIndex;
-  while (start != 0) {
-    if (code[searchPos] === '{') {
-      start++;
-    }
-    else if (code[searchPos] === '}') {
-      start--;
-    }
-    searchPos++;
+
+  function parse(code) {
+    /**
+     * @type {String}
+     **/
+    var srcCode = parser.parse(code);
+    parsedBlocks = parser.getCodeBlocks();
+
+    return srcCode.replace(repeatArrayRegex, (match, p1, p2) => {
+      return '[].concat(directive_repeater(' + [p1, p2].join(',') + '))';
+    });
   }
-  var codeBlock = '{' + code.substring(startBlock, searchPos);
-  repeaterBlocks.push(codeBlock);
-  var placeHolder = makePlaceHolder(repeaterBlocks.length - 1);
+
+  function directive_repeater(numRepeat, blockIndex) {
+
+  }
 
 
   return {
-    parsedCode: code.replace(codeBlock, placeHolder),
-    nextSearchPos: (startBlock - 1) + (placeHolder.length)
+    parse,
+    directive_repeater
   };
 }
 
-function repeaterSourceParser(code) {
-
-  var parsedPos = 0;
-  var end = false;
-
-  while (!end) {
-    var result = repeaterBlockParser(code);
-
-    if (result.parsedCode) {
-      code = result.parsedCode;
-    }
-    parsedPos = result.nextSearchPos;
-
-    if (!parsedPos || parsedPos >= code.length) {
-      end = true;
-    }
-  }
-
-  return {code: code, repeaterBlocks: repeaterBlocks};
-}
-
-module.exports = repeaterSourceParser;
+module.exports = directive;
 
