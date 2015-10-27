@@ -8,7 +8,21 @@ var exampleStr = require('../resources/json-generator.jsample.txt');
 
 describe('Parser', () => {
 
-  fdescribe('Parsing function', () => {
+  fdescribe('Repeater direactive', () => {
+
+    it('should render parsed code correctly', () => {
+      var {parse} = require('../../src/directives/repeat')((codeBlock) => {
+        return codeBlock;
+      });
+
+      var parsedCode = parse(require('../resources/repeat-simple.jsample.txt'));
+      expect(parsedCode).toContain("[].concat(directive_repeater(5,0))");
+      console.log(parsedCode);
+    });
+
+  });
+
+  describe('Parsing function', () => {
     it('should initialize normal', () => {
       var results = parser(exampleStr);
       console.log(JSON.stringify({}, null, 2));
@@ -25,7 +39,7 @@ describe('Parser', () => {
     });
 
     it('normal array should work', () => {
-      var attrParser= require('../../src/attr-parser');
+      var attrParser = require('../../src/attr-parser');
       var source = require('../resources/array-normal.jsample.txt');
       var results = attrParser.parse(source);
 
@@ -33,7 +47,7 @@ describe('Parser', () => {
     });
 
     it('repeater parser', () => {
-      var attrParser= require('../../src/attr-parser');
+      var attrParser = require('../../src/attr-parser');
       var source = require('../resources/repeat-nested.jsample.txt');
       var results = attrParser.parse(source);
 
@@ -78,7 +92,7 @@ describe('Parser', () => {
       expect(typeof results.foo).toEqual("string")
     });
 
-  })
+  });
 
 
 });

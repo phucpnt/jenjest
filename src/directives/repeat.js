@@ -18,14 +18,7 @@
  * into:
  *
  * ```
- *   [].concat(_repeat1(), {});
- *
- *   function _repeat1() {
- *    return {
- *      field1: '...',
- *      field2: '...'
- *    }
- *   }
+ *   [].concat(directive_repeater(numRepeat, parseBlockIndex));
  * ```
  *
  **/
@@ -33,10 +26,16 @@
 var makeBlockParser = require('./_block-grabber');
 var repeaterBlocks = [];
 
-function directive(code) {
+/**
+ *
+ * @param generator {Function}
+ * @returns {{parse: parse, directive_repeater: directive_repeater}}
+ */
+function directive(generator) {
 
   var repeatIndicatorRegex = /'repeat\(\d+\)'\s*:\s*\{/ig;
-  var repeatArrayRegex = /\['repeat\((\d+)\)'\s*:\s*(\d+)\s*\]/ig;
+  var repeatArrayRegex = /\[\s*\{\s*'repeat\((\d+)\)'\s*:\s*(\d+)\s*\}\s*\]/ig;
+
   var parsedBlocks = [];
   var parser = makeBlockParser(repeatIndicatorRegex, makePlaceHolder);
 
@@ -57,7 +56,10 @@ function directive(code) {
   }
 
   function directive_repeater(numRepeat, blockIndex) {
-
+    var results = [];
+    for (var i = 0; i < numRepeat; i++) {
+      results.push(generator(parsedBlocks[blockIndex]));
+    }
   }
 
 
