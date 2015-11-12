@@ -24,7 +24,6 @@
  **/
 
 var makeBlockParser = require('./_block-grabber');
-var repeaterBlocks = [];
 
 /**
  *
@@ -60,6 +59,7 @@ function directive(generator) {
     for (var i = 0; i < numRepeat; i++) {
       results.push(generator(parsedBlocks[blockIndex]));
     }
+    return results;
   }
 
 
@@ -69,5 +69,5 @@ function directive(generator) {
   };
 }
 
-module.exports = directive;
+export default directive;
 

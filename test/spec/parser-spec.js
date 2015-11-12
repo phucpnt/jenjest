@@ -8,20 +8,6 @@ var exampleStr = require('../resources/json-generator.jsample.txt');
 
 describe('Parser', () => {
 
-  fdescribe('Repeater direactive', () => {
-
-    it('should render parsed code correctly', () => {
-      var {parse} = require('../../src/directives/repeat')((codeBlock) => {
-        return codeBlock;
-      });
-
-      var parsedCode = parse(require('../resources/repeat-simple.jsample.txt'));
-      expect(parsedCode).toContain("[].concat(directive_repeater(5,0))");
-      console.log(parsedCode);
-    });
-
-  });
-
   describe('Parsing function', () => {
     it('should initialize normal', () => {
       var results = parser(exampleStr);

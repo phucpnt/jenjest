@@ -1,0 +1,10 @@
+//noinspection BadExpressionStatementJS
+[
+  {
+    'firstname': 'Phuc',
+    'lastname': 'PNT',
+    'hello' : function(gen){
+      return ['hello' , this.firstname , this.lastname].join(' ');
+    }
+  }
+]

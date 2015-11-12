@@ -2,40 +2,68 @@
  * Created by Phuc on 10/17/2015.
  */
 
-var functionPlaceHolders = [];
+/**
+ *
+ * code will transform the following:
+ * ```
+ * [
+ *   {
+ *     'hello': function(gen) => {
+ *        return 'hello'+ ' '+  this.firstName + ' '+ this.lastName;
+ *     }
+ *   }
+ * ]
+ * ```
+ * into:
+ *
+ * ```
+ * [
+ *   {
+ *     'hello': _defer_function(index, gen),
+ *   }
+ * ]
+ * ```
+ *
+ **/
 
-function functionBlockParser(code){
+var makeBlockParser = require('./_block-grabber');
+/**
+ *
+ * @param generator
+ * @returns {{parse: parse, _defer_function: _defer_function}}
+ */
+function functionBlockParser(generator) {
 
-  var functionBlockStart = /function\(.*?\)'\s*:\s*\{/ig;
-  var matched = functionBlockStart.exec(code);
+  var functionIndicatorRegex = /function\(gen\)\s*\{/ig;
+  //var repeatArrayRegex = /\[\s*\{\s*'repeat\((\d+)\)'\s*:\s*(\d+)\s*\}\s*\]/ig;
 
-  if (matched == null) {
-    return {};
+  var parsedBlocks = [];
+  var parser = makeBlockParser(functionIndicatorRegex, makePlaceHolder);
+
+  function makePlaceHolder(index) {
+    return '{return __defer_function(' + index + ', gen)}';
   }
-  var start = 1;
-  var startBlock, searchPos;
-  startBlock = searchPos = functionBlockStart.lastIndex;
-  while (start != 0) {
-    if (code[searchPos] === '{') {
-      start++;
-    }
-    else if (code[searchPos] === '}') {
-      start--;
-    }
-    searchPos++;
+
+  function parse(code) {
+    /**
+     * @type {String}
+     **/
+    var srcCode = parser.parse(code);
+    parsedBlocks = parser.getCodeBlocks();
+
+    return srcCode;
   }
-  var codeBlock = '{' + code.substring(startBlock, searchPos);
-  functionPlaceHolders.push(codeBlock);
-  var placeHolder = makePlaceHolder(functionPlaceHolders.length - 1);
+
+  function _defer_function(index) {
+    return parsedBlocks[index]
+  }
 
 
   return {
-    parsedCode: code.replace(codeBlock, placeHolder),
-    nextSearchPos: (startBlock - 1) + (placeHolder.length)
+    parse,
+    _defer_function
   };
 
 }
 
-function makePlaceHolder(index) {
-  return "_defer_function(index)";
-}
+export default functionBlockParser
