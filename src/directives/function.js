@@ -41,7 +41,7 @@ function functionBlockParser(generator) {
   var parser = makeBlockParser(functionIndicatorRegex, makePlaceHolder);
 
   function makePlaceHolder(index) {
-    return '{return console.log(this); return _defer_function(' + index + ', gen);}()';
+    return '{console.log(this); return _defer_function(' + index + ', gen);}()';
   }
 
   function parse(code) {
@@ -55,7 +55,7 @@ function functionBlockParser(generator) {
   }
 
   function _defer_function(index) {
-    return parsedBlocks[index]
+    return parsedBlocks[index];
   }
 
 
