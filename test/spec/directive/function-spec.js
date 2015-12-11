@@ -4,7 +4,7 @@
 
 import makeDirective from '../../../src/directives/function'
 
-fdescribe('Function Directive >', () => {
+describe('Function Directive >', () => {
   var directive;
 
   beforeEach(() => {

@@ -2,7 +2,6 @@
 [
   {
     _id: '{{objectId().$}}-{{objectId().$}}',
-    _id1: objectId().$,
     index: '{{index().$}}'
   }
 ]
