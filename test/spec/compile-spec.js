@@ -6,7 +6,7 @@ import makeCompile from '../../src/compile'
 
 const compile = makeCompile();
 
-fdescribe('Basic compile', () => {
+describe('Basic compile', () => {
 
   it('should return an object', () => {
 
