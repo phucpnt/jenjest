@@ -1,0 +1,8 @@
+//noinspection BadExpressionStatementJS
+[
+  {
+    _id: '{{objectId().$}}-{{objectId().$}}',
+    id1: objectId().$,
+    index: '{{index().$}}'
+  }
+]
