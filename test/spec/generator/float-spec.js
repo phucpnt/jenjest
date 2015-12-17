@@ -4,7 +4,7 @@
 
 import float from '../../../src/generator/float';
 
-fdescribe('generator float number >>', () => {
+describe('generator float number >>', () => {
 
   it('should gen number correctly with decimal digit = 0', () => {
     console.log(float());

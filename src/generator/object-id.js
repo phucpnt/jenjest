@@ -2,15 +2,11 @@
  * Created by Phuc on 10/1/2015.
  */
 
-module.exports = function () {
-
-    return {
-      get $() {
-        return ObjectId();
-      }
-    };
-
-};
+export default () =>({
+  get $() {
+    return ObjectId();
+  }
+});
 
 /*
  *
@@ -76,8 +72,8 @@ ObjectId.prototype.toArray = function () {
   var strOid = this.toString();
   var array = [];
   var i;
-  for(i = 0; i < 12; i++) {
-    array[i] = parseInt(strOid.slice(i*2, i*2+2), 16);
+  for (i = 0; i < 12; i++) {
+    array[i] = parseInt(strOid.slice(i * 2, i * 2 + 2), 16);
   }
   return array;
 };
