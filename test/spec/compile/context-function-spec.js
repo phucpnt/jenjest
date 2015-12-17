@@ -12,7 +12,7 @@ describe('Compile with context function generator', () => {
 
   it('should work with simple flat schema', () => {
 
-    var data = finalCompile(require('../../resources/context-function-static.jsample.txt'));
+    var data = finalCompile(require('../../resources/context-function/static.jsample.txt'));
 
     console.log(data);
     expect(typeof data).toEqual('object');
@@ -20,7 +20,7 @@ describe('Compile with context function generator', () => {
   });
 
   it('should work with nested schema', () => {
-    var data = finalCompile(require('../../resources/context-function-static-nested.jsample.txt'));
+    var data = finalCompile(require('../../resources/context-function/static-nested.jsample.txt'));
     console.log(JSON.stringify(data, null, 2));
     expect(typeof data).toEqual('object');
 
