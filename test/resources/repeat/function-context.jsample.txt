@@ -1,0 +1,15 @@
+//noinspection BadExpressionStatementJS
+[
+  {
+    'repeat(5)': {
+      _id: '{{objectId().$}}',
+      foo: '{{undefined_generator_method().more().more(2).$}}',
+      bar: '{{undefined_generator_method(12345).more().more(2).$}}',
+      first_name: 'Phuc',
+      last_name: 'PNT',
+      hello: function(){
+        return ['Hello', this.first_name, this.last_name, this._id].join(' ');
+      }
+    }
+  }
+]

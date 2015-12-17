@@ -2,7 +2,8 @@
  * Created by Phuc on 12/15/2015.
  */
 
-import _ from 'lodash';
+import _ from 'lodash'
+import makeGlobalAccessFn from '../helper/make-global-access'
 
 var fieldGenPattern = /\{\{\s*(.*?)\s*\}\}/g;
 var fnNamePattern = /(.+?)\(.*?\)/i;
@@ -30,6 +31,3 @@ export default (generators) => (next) => (src) => {
   return next(parsedSrc);
 }
 
-function makeGlobalAccessFn(key, fn){
-  window[key] = fn;
-}

@@ -7,7 +7,7 @@ import makeCompile from '../../../src/compile'
 import makeContextFunctionCompile from '../../../src/compile/context-function'
 
 
-fdescribe('Compile with context function generator', () => {
+describe('Compile with context function generator', () => {
   var finalCompile = makeContextFunctionCompile()(makeCompile());
 
   it('should work with simple flat schema', () => {

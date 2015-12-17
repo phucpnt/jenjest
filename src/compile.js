@@ -4,5 +4,5 @@
 
 
 export default () => (src) => {
-  return eval(src);
+  return eval(['(',src, ')'].join(''));
 }
