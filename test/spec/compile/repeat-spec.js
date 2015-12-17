@@ -9,7 +9,7 @@ import makeValueGenerateCompile from '../../../src/compile/value-generate'
 import makeContextFunctionCompile from '../../../src/compile/context-function'
 
 
-fdescribe('Compile with repeat generator', () => {
+describe('Compile with repeat generator', () => {
   var finalCompile = makeRepeatCompile()(makeCompile());
 
   it('should work with simple schema', () => {
