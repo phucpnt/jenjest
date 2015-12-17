@@ -1,0 +1,8 @@
+//noinspection BadExpressionStatementJS
+({
+  firstname: 'Phuc',
+  lastname: 'PNT',
+  hello: function(){
+    return ['hello', this.firstname, this.lastname].join(' ');
+  }
+})

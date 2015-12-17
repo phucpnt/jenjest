@@ -8,9 +8,9 @@ import makeValueGenerateCompile from '../../../src/compile/value-generate'
 import ObjectId from '../../../src/generator/object-id'
 
 
-fdescribe('Compile with value generated', () => {
+describe('Compile with value generated', () => {
 
-  it('should work with string template', () => {
+  it('should work with string template include generator', () => {
     var finalCompile = makeValueGenerateCompile({'objectId': ObjectId})(makeCompile());
 
     var data = finalCompile(require('../../resources/json-generator.jsample.txt'));

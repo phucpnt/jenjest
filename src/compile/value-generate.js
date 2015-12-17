@@ -11,9 +11,7 @@ var srcTemplate = _.template('(function() {<%= generators %> return (<%= src %>)
 
 export default (generators) => (next) => (src) => {
 
-  var generatorEvalStrs = Object.keys(generators).forEach((key) => {
-    window[key] = generators[key];
-  });
+  Object.keys(generators).forEach((key) => (makeGlobalAccessFn(key, generators[key])));
 
   var parsedSrc = src.replace(fieldGenPattern, function (match, p1) {
     var data;
@@ -30,4 +28,8 @@ export default (generators) => (next) => (src) => {
   });
 
   return next(parsedSrc);
+}
+
+function makeGlobalAccessFn(key, fn){
+  window[key] = fn;
 }

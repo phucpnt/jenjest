@@ -1,0 +1,21 @@
+//noinspection BadExpressionStatementJS
+({
+  messages: [
+    {
+      firstname: 'Phuc',
+      lastname: 'PNT',
+      type: 'Hello',
+      content: function () {
+        return [this.type, this.firstname, this.lastname].join(' ');
+      }
+    },
+    {
+      firstname: 'Phuc',
+      lastname: 'PNT',
+      type: 'Ciao',
+      content: function () {
+        return [this.type, this.firstname, this.lastname].join(' ');
+      }
+    }
+  ]
+})
