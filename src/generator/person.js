@@ -6,17 +6,14 @@ import faker from 'faker';
 import makeFluentInterface from './make-fluent-interface';
 
 export default makeFluentInterface(
-    function (attrs) {
-
-      return {
-        name: () => (name(attrs.gender)),
-        address
-      };
+    {
+      name,
+      address
     }
     , {gender: 'people gender: male, female'}
 )
 
-function name(gender) {
+function name({gender}) {
 
   switch (gender) {
     case 'male':
@@ -28,8 +25,8 @@ function name(gender) {
   }
 
   return {
-    first_name: () => ( faker.name.firstName(gender)),
-    last_name: () => ( faker.name.lastName(gender)),
+    first_name: () => (faker.name.firstName(gender)),
+    last_name: () => (faker.name.lastName(gender)),
     full_name: () => (faker.name.findName(null, null, gender))
   }
 }

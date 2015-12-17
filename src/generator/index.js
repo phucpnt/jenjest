@@ -3,13 +3,5 @@
  */
 var _ = require('lodash');
 
-module.exports = function () {
-
-  return {
-    get $() {
-      return _.uniqueId();
-    }
-  };
-
-};
+export default () => (_.uniqueId())
 
