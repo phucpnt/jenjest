@@ -1,0 +1,29 @@
+//noinspection BadExpressionStatementJS
+[
+  {
+    'repeat(2)': {
+      _id: '{{objectId().$}}',
+      _id1: '{{objectId().$}}',
+      foo: '{{undefined_generator_method().more().more(2).$}}',
+      bar: [{
+        'repeat(2)': {
+          _id: '{{index().$}}',
+          bar: [{
+            'repeat(2)': {
+              _id: '{{index().$}}'
+            }
+          }]
+        }
+      }],
+      qux: [ // normal array
+        {
+          _id: '{{objectId().$}}'
+        },
+        {
+          _id: '{{objectId().$}}'
+        },
+        '{{objectId().$}}'
+      ]
+    }
+  }
+]

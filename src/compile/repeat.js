@@ -8,22 +8,14 @@ import _ from 'lodash';
 
 export default () => {
 
-  var compile = null;
-  var builtCompile = false;
-  var parse, directive_repeater;
-
   return function repeatee(next) {
+    var {parse, directive_repeater}= directive(next);
+    makeGlobalAccessFn('directive_repeater', directive_repeater);
 
-    if (!builtCompile) {
-      builtCompile = true;
-      compile = repeatee(next);
-      var tmp = directive(compile);
-      parse = tmp.parse;
-      directive_repeater = tmp.directive_repeater;
-      makeGlobalAccessFn('directive_repeater', directive_repeater);
-    }
-
-    return (src) => ( next(parse(src)) );
+    return (src) => {
+      var parsedCode = parse(src);
+      return next(parsedCode);
+    };
   }
 
 }
@@ -62,29 +54,58 @@ function directive(generator) {
   var repeatArrayRegex = /\[\s*\{\s*'repeat\((\d+)\)'\s*:\s*(\d+)\s*\}\s*\]/ig;
 
   var parsedBlocks = [];
+  var cleanParsedBlocks = [];
   var parser = makeBlockParser(repeatIndicatorRegex, makePlaceHolder);
 
   function makePlaceHolder(index) {
     return index;
   }
 
-  function parse(code) {
-    /**
-     * @type {String}
-     **/
-    var srcCode = parser.parse(code);
-    parsedBlocks = parser.getCodeBlocks();
+  function _parseRecur(parser) {
 
-    return srcCode.replace(repeatArrayRegex, (match, p1, p2) => {
-      return '[].concat(directive_repeater(' + [p1, p2].join(',') + '))';
-    });
+    var currentParsedBlockIndex = 0;
+
+    function haveMoreParsingBlock() {
+      return currentParsedBlockIndex < parsedBlocks.length;
+    }
+
+    function parseUnit(code) {
+      /**
+       * @type {String}
+       **/
+      var srcCode = parser.parse(code);
+      var nuBlocks = parser.getCodeBlocks();
+
+      if (nuBlocks.length > parsedBlocks.length) {
+        parsedBlocks = parsedBlocks.concat(nuBlocks.slice(parsedBlocks.length));
+      }
+
+      return srcCode.replace(repeatArrayRegex, (match, p1, p2) => {
+        return '[].concat(directive_repeater(' + [p1, p2].join(',') + '))';
+      });
+
+    }
+
+    return (code) => {
+      var parsedCode = parseUnit(code);
+      while (haveMoreParsingBlock()) {
+        cleanParsedBlocks.push(parseUnit(parsedBlocks[currentParsedBlockIndex]));
+        currentParsedBlockIndex++;
+      }
+      return parsedCode;
+    };
+
+  }
+
+  function parse(code) {
+    return _parseRecur(parser)(code);
   }
 
   function directive_repeater(numRepeat, blockIndex) {
     var results = [];
-    console.log(parsedBlocks[blockIndex]);
+    var parsedCode = cleanParsedBlocks[blockIndex];
     for (var i = 0; i < numRepeat; i++) {
-      results.push(generator(parsedBlocks[blockIndex]));
+      results.push(generator(parsedCode));
     }
     return results;
   }

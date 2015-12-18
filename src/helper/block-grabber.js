@@ -53,6 +53,7 @@ function createBlockGrabber(startRegex, makePlaceHolder) {
 
     var parsedPos = 0;
     var end = false;
+    regexBlockStart.lastIndex = 0; // IMPORTANT: reset the last search index as we use the global search in javascript regex
 
     while (!end) {
       var result = parseOne(parsedSrc);

@@ -9,11 +9,19 @@ import makeValueGenerateCompile from '../../../src/compile/value-generate'
 import makeContextFunctionCompile from '../../../src/compile/context-function'
 
 
-describe('Compile with repeat generator', () => {
+fdescribe('Compile with repeat generator', () => {
   var finalCompile = makeRepeatCompile()(makeCompile());
 
   it('should work with simple schema', () => {
     var data = finalCompile(require('../../resources/repeat/simple.jsample.txt'));
+
+    console.log(JSON.stringify(data, null, 2));
+    expect(typeof data).toEqual('object');
+
+  });
+
+  it('should work with nested schema', () => {
+    var data = finalCompile(require('../../resources/repeat/nested.jsample.txt'));
 
     console.log(JSON.stringify(data, null, 2));
     expect(typeof data).toEqual('object');
@@ -56,7 +64,7 @@ describe('Compile with repeat generator', () => {
   it('should with with full compile', () => {
 
     var finalCompile = _.flowRight(
-        makeRepeatCompile(),
+        makeRepeatCompile(), // should be first
         makeValueGenerateCompile({
           objectId: require('../../../src/generator/object-id')
         }),
