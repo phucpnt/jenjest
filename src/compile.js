@@ -3,6 +3,6 @@
  */
 
 
-export default () => (src) => {
-  return eval(['(',src, ')'].join(''));
+export default () => (src, ...availFun) => {
+  return Function.prototype.constructor.call(null, ...availFun, `return (${src});`);
 }

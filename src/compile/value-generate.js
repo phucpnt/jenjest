@@ -3,31 +3,29 @@
  */
 
 import _ from 'lodash'
-import makeGlobalAccessFn from '../helper/make-global-access'
 
 var fieldGenPattern = /\{\{\s*(.*?)\s*\}\}/g;
 var fnNamePattern = /(.+?)\(.*?\)/i;
 var srcTemplate = _.template('(function() {<%= generators %> return (<%= src %>); }())');
 
 
-export default (generators) => (next) => (src) => {
-
-  Object.keys(generators).forEach((key) => (makeGlobalAccessFn(key, generators[key])));
+export default (generators) => (next) => (src, ...availFuns) => {
 
   var parsedSrc = src.replace(fieldGenPattern, function (match, p1) {
-    var data;
-    var fnName = p1.match(fnNamePattern);
+    var fnName = p1.match(fnNamePattern)[1];
 
-    if (eval('typeof (' + fnName[1] + ') !== "function"')) {
+    if (typeof generators[fnName] !== 'function') {
       return "__undefined--" + p1 + "__";
     }
-    else {
-      eval('data= ' + p1 + ';');
-    }
-
-    return data;
+    var fn = Function.prototype.constructor.call(null, fnName, `return ${p1};`);
+    return fn(generators[fnName]);
   });
 
-  return next(parsedSrc);
+  var availGeneratorNames = Object.keys(generators);
+  var generate = next(parsedSrc, availGeneratorNames.concat(availFuns));
+  var availGenerators = availGeneratorNames.map((name) => generators[name]);
+
+  return (...args) => (generate.call(null, ...availGenerators, ...args))
+
 }
 

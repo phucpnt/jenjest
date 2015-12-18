@@ -11,8 +11,8 @@ describe('Basic compile', () => {
   it('should return an object', () => {
 
     var exampleStr = require('../resources/json-generator.jsample.txt');
-    var result = compile(exampleStr);
-    expect(typeof result).toEqual('object');
+    var generate= compile(exampleStr);
+    expect(typeof generate()).toEqual('object');
 
   })
 
