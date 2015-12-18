@@ -2,7 +2,6 @@
  * Created by Phuc on 12/17/2015.
  */
 
-import makeGlobalAccessFn from '../helper/make-global-access';
 import makeBlockParser from '../helper/block-grabber';
 import _ from 'lodash';
 
