@@ -9,7 +9,7 @@ var fnNamePattern = /(.+?)\(.*?\)/i;
 var srcTemplate = _.template('(function() {<%= generators %> return (<%= src %>); }())');
 
 
-export default (generators) => (next) => (src, ...availFuns) => {
+export default (generators) => (next) => (...availFuns) => (src) => {
 
   var parsedSrc = src.replace(fieldGenPattern, function (match, p1) {
     var fnName = p1.match(fnNamePattern)[1];
@@ -22,7 +22,7 @@ export default (generators) => (next) => (src, ...availFuns) => {
   });
 
   var availGeneratorNames = Object.keys(generators);
-  var generate = next(parsedSrc, availGeneratorNames.concat(availFuns));
+  var generate = next(availGeneratorNames.concat(availFuns))(parsedSrc);
   var availGenerators = availGeneratorNames.map((name) => generators[name]);
 
   return (...args) => (generate.call(null, ...availGenerators, ...args))

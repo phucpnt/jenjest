@@ -15,10 +15,10 @@
  * }
  */
 
-export default () => (next) => (src, ...availFuns) => {
+export default () => (next) => (...availFuns) => (src) => {
 
-  var generate = next(src, ...availFuns);
-  return (...args) => (iterateObjOnFn(generate(args)));
+  var generate = next(...availFuns)(src);
+  return (...args) => (iterateObjOnFn(generate(...args)));
 }
 
 function iterateObjOnFn(obj) {

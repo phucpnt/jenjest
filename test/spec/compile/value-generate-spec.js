@@ -13,7 +13,7 @@ describe('Compile with value generated', () => {
   it('should work with string template include generator', () => {
     var finalCompile = makeValueGenerateCompile({'objectId': ObjectId})(makeCompile());
 
-    var generate = finalCompile(require('../../resources/json-generator.jsample.txt'));
+    var generate = finalCompile()(require('../../resources/json-generator.jsample.txt'));
     var data = generate();
 
     expect(typeof data).toEqual('object');
@@ -23,8 +23,8 @@ describe('Compile with value generated', () => {
 
   it('should work with direct field generate', () => {
     var finalCompile = makeValueGenerateCompile({'objectId': ObjectId})(makeCompile());
-    var generate = finalCompile(require('../../resources/json-generator-direct-field.jsample.txt'));
-    var data = generate()
+    var generate = finalCompile()(require('../../resources/json-generator-direct-field.jsample.txt'));
+    var data = generate();
 
     expect(typeof data).toEqual('object');
     expect(JSON.stringify(data)).not.toContain('objectId');

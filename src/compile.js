@@ -3,6 +3,6 @@
  */
 
 
-export default () => (src, ...availFun) => {
+export default () => (...availFun) => (src) => {
   return Function.prototype.constructor.call(null, ...availFun, `return (${src});`);
 }

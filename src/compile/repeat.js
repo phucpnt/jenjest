@@ -6,19 +6,23 @@ import makeGlobalAccessFn from '../helper/make-global-access';
 import makeBlockParser from '../helper/block-grabber';
 import _ from 'lodash';
 
-export default () => {
+export default () => (next) => (...availFuns) => (src) => {
 
-  return function repeatee(next) {
-    var {parse, directive_repeater}= directive(next);
-    makeGlobalAccessFn('directive_repeater', directive_repeater);
+  var generate = next(...availFuns, 'directive_repeater');
 
-    return (src) => {
-      var parsedCode = parse(src);
-      return next(parsedCode);
+  return (...args) => {
+    var {parse, directive_repeater} = directive();
+
+    var directiveExec = (src) => {
+      return generate(src)(...args, directive_repeater(directiveExec));
     };
-  }
 
-}
+    var parsedCode = (parse(src));
+
+    return generate(parsedCode)(...args, directive_repeater(directiveExec));
+
+  };
+};
 
 
 /**
@@ -45,10 +49,9 @@ export default () => {
 
 /**
  *
- * @param generator {Function}
  * @returns {{parse: parse, directive_repeater: directive_repeater}}
  */
-function directive(generator) {
+function directive() {
 
   var repeatIndicatorRegex = /'repeat\(\d+\)'\s*:\s*\{/ig;
   var repeatArrayRegex = /\[\s*\{\s*'repeat\((\d+)\)'\s*:\s*(\d+)\s*\}\s*\]/ig;
@@ -101,13 +104,19 @@ function directive(generator) {
     return _parseRecur(parser)(code);
   }
 
-  function directive_repeater(numRepeat, blockIndex) {
-    var results = [];
-    var parsedCode = cleanParsedBlocks[blockIndex];
-    for (var i = 0; i < numRepeat; i++) {
-      results.push(generator(parsedCode));
+  function directive_repeater(generator) {
+
+    return (numRepeat, blockIndex) => {
+
+      var results = [];
+      var parsedCode = cleanParsedBlocks[blockIndex];
+      for (var i = 0; i < numRepeat; i++) {
+        results.push(generator(parsedCode));
+      }
+      return results;
+
     }
-    return results;
+
   }
 
 
