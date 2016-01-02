@@ -5,7 +5,8 @@
   "main": "dist/jserator.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "node build.js"
+    "build": "node build.js",
+    "release": "node release.js && git add . && git commit -m \"build release\""
   },
   "keywords": [
     "json-generator",
