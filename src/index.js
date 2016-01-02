@@ -21,7 +21,8 @@ export default function makeGenerator(src, availFuns = {}){
     makeContextFunctionCompile()
   )(makeCompile());
 
-  return () => compile()(src)(...funs);
+
+  return () => finalCompile(...funIds)(src)(...funs);
 }
 
 

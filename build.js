@@ -9,7 +9,9 @@ try{
 
 }
 
-browserify("./src/index.js")
+browserify("./src/index.js", {
+  standalone: 'jserator'
+})
 .transform("babelify", {presets: ['es2015', 'stage-0']})
 .bundle()
 .pipe(fs.createWriteStream("./dist/jserator.js"));
