@@ -17,7 +17,7 @@ export default function makeGenerator(src, availFuns = {}){
 
   var finalCompile = _.flowRight(
     makeRepeatCompile(), // should be first
-    buildValueGenerateCompile(),
+    makeValueGenerateCompile(),
     makeContextFunctionCompile()
   )(makeCompile());
 

@@ -5,7 +5,7 @@ import genFloat from '../generator/float';
 import person from '../generator/person';
 import genIndex from '../generator/index';
 
-export default function buildValueGenerateCompile(){
+export default function (){
   return makeValueGenerateCompile({
     objectId: objectId,
     float: genFloat,

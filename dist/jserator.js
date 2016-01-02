@@ -41,7 +41,7 @@ function makeGenerator(src) {
   });
 
   var finalCompile = _lodash2.default.flowRight((0, _repeat2.default)(), // should be first
-  buildValueGenerateCompile(), (0, _contextFunction2.default)())((0, _compile2.default)());
+  (0, _makeValueGenerator2.default)(), (0, _contextFunction2.default)())((0, _compile2.default)());
 
   return function () {
     return finalCompile.apply(undefined, _toConsumableArray(funIds))(src).apply(undefined, _toConsumableArray(funs));
@@ -56530,7 +56530,15 @@ exports.default = createBlockGrabber;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = buildValueGenerateCompile;
+
+exports.default = function () {
+  return (0, _valueGenerate2.default)({
+    objectId: _objectId2.default,
+    float: _float2.default,
+    person: _person2.default,
+    index: _index2.default
+  });
+};
 
 var _valueGenerate = require('../compile/value-generate');
 
@@ -56553,15 +56561,6 @@ var _index = require('../generator/index');
 var _index2 = _interopRequireDefault(_index);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function buildValueGenerateCompile() {
-  return (0, _valueGenerate2.default)({
-    objectId: _objectId2.default,
-    float: _float2.default,
-    person: _person2.default,
-    index: _index2.default
-  });
-}
 
 },{"../compile/value-generate":924,"../generator/float":925,"../generator/index":926,"../generator/object-id":928,"../generator/person":929}]},{},[1])(1)
 });
