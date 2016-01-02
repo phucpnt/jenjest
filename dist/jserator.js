@@ -18,13 +18,13 @@ var _repeat = require('./compile/repeat');
 
 var _repeat2 = _interopRequireDefault(_repeat);
 
-var _valueGenerate = require('./compile/value-generate');
-
-var _valueGenerate2 = _interopRequireDefault(_valueGenerate);
-
 var _contextFunction = require('./compile/context-function');
 
 var _contextFunction2 = _interopRequireDefault(_contextFunction);
+
+var _makeValueGenerator = require('./helper/makeValueGenerator');
+
+var _makeValueGenerator2 = _interopRequireDefault(_makeValueGenerator);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -48,16 +48,7 @@ function makeGenerator(src) {
   };
 }
 
-function buildValueGenerateCompile() {
-  return (0, _valueGenerate2.default)({
-    objectId: require('./generator/object-id'),
-    float: require('./generator/float'),
-    person: require('./generator/person'),
-    objectId: require('./generator/object-id')
-  });
-}
-
-},{"./compile":921,"./compile/context-function":922,"./compile/repeat":923,"./compile/value-generate":924,"./generator/float":925,"./generator/object-id":927,"./generator/person":928,"lodash":919}],2:[function(require,module,exports){
+},{"./compile":921,"./compile/context-function":922,"./compile/repeat":923,"./helper/makeValueGenerator":931,"lodash":919}],2:[function(require,module,exports){
 // since we are requiring the top level of faker, load all locales by default
 var Faker = require('./lib');
 var faker = new Faker({ locales: require('./lib/locales') });
@@ -56060,7 +56051,7 @@ function directive() {
   };
 }
 
-},{"../helper/block-grabber":929,"lodash":919}],924:[function(require,module,exports){
+},{"../helper/block-grabber":930,"lodash":919}],924:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -56174,7 +56165,26 @@ function random() {
   return Number((Math.round((Math.random() * (max - min) + min) * Math.pow(10, dec)) / Math.pow(10, dec)).toFixed(dec));
 }
 
-},{"./make-fluent-interface":926,"numeral":920}],926:[function(require,module,exports){
+},{"./make-fluent-interface":927,"numeral":920}],926:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+/**
+ * Created by Phuc on 10/1/2015.
+ */
+var _ = require('lodash');
+
+exports.default = function () {
+  return {
+    get $() {
+      return _.uniqueId();
+    }
+  };
+};
+
+},{"lodash":919}],927:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -56267,7 +56277,7 @@ function makeTerminateWith$(fn) {
   };
 }
 
-},{"lodash":919}],927:[function(require,module,exports){
+},{"lodash":919}],928:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -56368,7 +56378,7 @@ ObjectId.prototype.toString = function () {
   return '00000000'.substr(0, 8 - timestamp.length) + timestamp + '000000'.substr(0, 6 - machine.length) + machine + '0000'.substr(0, 4 - pid.length) + pid + '000000'.substr(0, 6 - increment.length) + increment;
 };
 
-},{}],928:[function(require,module,exports){
+},{}],929:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -56434,7 +56444,7 @@ function address() {
   };
 }
 
-},{"./make-fluent-interface":926,"faker":2}],929:[function(require,module,exports){
+},{"./make-fluent-interface":927,"faker":2}],930:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -56514,5 +56524,44 @@ function createBlockGrabber(startRegex, makePlaceHolder) {
 
 exports.default = createBlockGrabber;
 
-},{}]},{},[1])(1)
+},{}],931:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = buildValueGenerateCompile;
+
+var _valueGenerate = require('../compile/value-generate');
+
+var _valueGenerate2 = _interopRequireDefault(_valueGenerate);
+
+var _objectId = require('../generator/object-id');
+
+var _objectId2 = _interopRequireDefault(_objectId);
+
+var _float = require('../generator/float');
+
+var _float2 = _interopRequireDefault(_float);
+
+var _person = require('../generator/person');
+
+var _person2 = _interopRequireDefault(_person);
+
+var _index = require('../generator/index');
+
+var _index2 = _interopRequireDefault(_index);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function buildValueGenerateCompile() {
+  return (0, _valueGenerate2.default)({
+    objectId: _objectId2.default,
+    float: _float2.default,
+    person: _person2.default,
+    index: _index2.default
+  });
+}
+
+},{"../compile/value-generate":924,"../generator/float":925,"../generator/index":926,"../generator/object-id":928,"../generator/person":929}]},{},[1])(1)
 });

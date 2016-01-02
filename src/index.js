@@ -6,8 +6,8 @@ import _ from 'lodash'
 
 import makeCompile from './compile'
 import makeRepeatCompile from './compile/repeat'
-import makeValueGenerateCompile from './compile/value-generate'
 import makeContextFunctionCompile from './compile/context-function'
+import makeValueGenerateCompile from './helper/makeValueGenerator'
 
 
 export default function makeGenerator(src, availFuns = {}){
@@ -23,14 +23,4 @@ export default function makeGenerator(src, availFuns = {}){
 
 
   return () => finalCompile(...funIds)(src)(...funs);
-}
-
-
-function buildValueGenerateCompile(){
-  return makeValueGenerateCompile({
-    objectId: require('./generator/object-id'),
-    float: require('./generator/float'),
-    person: require('./generator/person'),
-    objectId: require('./generator/object-id')
-  });
 }

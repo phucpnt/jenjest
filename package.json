@@ -1,6 +1,6 @@
 {
   "name": "jserator",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Json Generator Engine",
   "main": "dist/jserator.js",
   "scripts": {
