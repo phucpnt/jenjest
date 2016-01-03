@@ -7,7 +7,7 @@ import _ from 'lodash'
 import makeCompile from './compile'
 import makeRepeatCompile from './compile/repeat'
 import makeContextFunctionCompile from './compile/context-function'
-import makeValueGenerateCompile from './helper/makeValueGenerator'
+import makeValueGenerateCompile from './helper/make-value-generator'
 
 
 export default function makeGenerator(src, availFuns = {}){
