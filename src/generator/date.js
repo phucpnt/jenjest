@@ -2,22 +2,23 @@ import makeFluentInterface from './make-fluent-interface';
 import moment from 'moment';
 import faker from 'faker';
 
-const intervalPattern = /(\+|-)?(\d+)\s*(day|week|month|year)s?/i
+const intervalPattern = /(\+|-)?(\d+)\s*(day|week|month|year)s?/i;
 const dayInSecond = 60 * 60 * 1000;
 const intervalSecond = {
-  day: 24 * dayInSecond
+  day: 24 * dayInSecond,
   week: 7 * dayInSecond,
   month: 30 * dayInSecond,
   year: 365 * dayInSecond,
 };
 const second = 1000;
 
+
 export default makeFluentInterface({
   inPast,
   inFuture,
   between
 }, {
-  interval: '',
+  interval: 'as named explained',
   format: 'format datetime return',
   from: 'from date: follow the format `YYYY-MM-DD` `YYYY-MM-DD HH:mm:ss`',
   to: 'to date: follow the format `YYYY-MM-DD` `YYYY-MM-DD HH:mm:ss`',
@@ -27,32 +28,23 @@ export default makeFluentInterface({
 function inPast({
   interval = '1day'
 }) {
-  let now = Date.parse(Date.now());
-  let randomInterval = faker.random.number({
-    min: second,
-    max: parseIntervalStr(interval)
-    precision: second,
-  });
-  var genDate = new Date();
-  genDate.setTime(now - randomInterval);
-  return genDate;
+  return new Date(Date.now() - randomIntervalIn(interval));
 }
 
 function inFuture({
   interval = '1day'
 }) {
-  return inPast('-' + interval.replace('+', ''));
+  return new Date(Date.now() + randomIntervalIn(interval));
 }
 
 function between({
-  from: 'now',
-  to: 'tomorrow'
+  from = 'now',
+    to = 'tomorrow'
 }) {
-
   let dateFrom = parseDateStr(from);
   let dateTo = parseDateStr(to);
 
-  let result = faker.random.range({
+  let result = faker.random.number({
     min: Date.parse(dateFrom),
     max: Date.parse(dateTo),
     precision: second,
@@ -67,15 +59,16 @@ function between({
 function parseDateStr(str) {
 
   if (str === 'now') {
-    return Date.now();
+    return new Date();
   }
 
-  if (parseIntervalStr(str) !== null) {
-    return inFuture(str)
+  let interval= parseIntervalStr(str);
+  if (interval !== null) {
+    return new Date(Date.now() + interval);
   }
 
   let genDate = new Date();
-  genDate.setTime(Date.parse(str).getTime());
+  genDate.setTime(Date.parse(str));
   return genDate;
 }
 
@@ -89,7 +82,21 @@ function parseIntervalStr(intervalStr) {
   if (matchResult !== null) {
     let amount = parseInt(matchResult[2]);
     let unit = matchResult[3];
-    return intervalSecond[unit] * amount;
+    let negative = matchResult[1] === '-' ? -1 : 1;
+    return negative * intervalSecond[unit] * amount;
   }
   return null;
+}
+
+function randomIntervalIn(intervalStr) {
+  let parsedInterval = parseIntervalStr(intervalStr);
+  if (parsedInterval === null) {
+    return null;
+  }
+  let randomInterval = faker.random.number({
+    min: second,
+    max: Math.abs(parsedInterval),
+    precision: second,
+  });
+  return parsedInterval < 0 ? -randomInterval: parsedInterval;
 }

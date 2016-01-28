@@ -73,7 +73,7 @@ function makeTerminateWith$(fn) {
     if (typeof result === 'function') {
       return makeTerminateWith$(result);
     }
-    else if (typeof result === 'object') {
+    else if (_.isPlainObject(result)) {
       return _.mapValues(result, function (val) {
         return makeTerminateWith$(val);
       })

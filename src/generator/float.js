@@ -1,7 +1,7 @@
 /**
  * Created by Phuc on 10/7/2015.
  */
-import makeFluentInterface from './make-fluent-interface'
+import makeFluentInterface from './make-fluent-interface';
 
 var numeral = require('numeral');
 
@@ -31,4 +31,3 @@ export default makeFluentInterface(({min=0, max=9999, decimal = 0, format_patter
 function random(min = 0, max = 9999, dec = 0) {
   return Number((Math.round((Math.random() * (max - min) + min) * Math.pow(10, dec)) / Math.pow(10, dec)).toFixed(dec));
 }
-

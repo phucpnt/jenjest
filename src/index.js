@@ -2,12 +2,12 @@
 * Created by Phuc on 10/1/2015.
 */
 
-import _ from 'lodash'
+import _ from 'lodash';
 
-import makeCompile from './compile'
-import makeRepeatCompile from './compile/repeat'
-import makeContextFunctionCompile from './compile/context-function'
-import makeValueGenerateCompile from './helper/make-value-generator'
+import makeCompile from './compile';
+import makeRepeatCompile from './compile/repeat';
+import makeContextFunctionCompile from './compile/context-function';
+import makeValueGenerateCompile from './helper/make-value-generator';
 
 
 export default function makeGenerator(src, availFuns = {}){

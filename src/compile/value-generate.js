@@ -2,7 +2,7 @@
  * Created by Phuc on 12/15/2015.
  */
 
-import _ from 'lodash'
+import _ from 'lodash';
 
 var fieldGenPattern = /\{\{\s*(.*?)\s*\}\}/g;
 var fnNamePattern = /(.+?)\(.*?\)/i;
@@ -28,4 +28,3 @@ export default (generators) => (next) => (...availFuns) => (src) => {
   return (...args) => (generate.call(null, ...availGenerators, ...args))
 
 }
-
