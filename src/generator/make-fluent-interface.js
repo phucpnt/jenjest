@@ -4,6 +4,13 @@
 
 import _ from 'lodash'
 
+/**
+ *
+ * @param  {mixed: function, Object} mixed the core of generator
+ * @param  {Object} attrsWithDescription description for generator defined attributes
+ * @return {function} the wrapped generator which make sure to return the final value only when invoke `$` at the end
+ *                        predefined generator spec
+ */
 export default (mixed, attrsWithDescription) => {
 
   if (typeof mixed === 'function') {
