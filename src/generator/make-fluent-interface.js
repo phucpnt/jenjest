@@ -23,6 +23,33 @@ export default (mixed, attrsWithDescription) => {
 
 }
 
+export function makeTerminateWith$(fn) {
+
+  return (...args) => {
+
+    var result = fn(...args);
+
+    if (typeof result === 'function') {
+      return makeTerminateWith$(result);
+    }
+    else if (_.isPlainObject(result)) {
+      return _.mapValues(result, function (val) {
+        return makeTerminateWith$(val);
+      })
+    }
+    else {
+      return {
+        get $() {
+          return result;
+        }
+      }
+    }
+
+  }
+
+}
+
+
 function makeFluentForApi(api, attrsWithDescription) {
 
   return () => {
@@ -62,30 +89,4 @@ function makeFluentObj(attrsWithDescription) {
   });
 
   return obj;
-}
-
-function makeTerminateWith$(fn) {
-
-  return (...args) => {
-
-    var result = fn(...args);
-
-    if (typeof result === 'function') {
-      return makeTerminateWith$(result);
-    }
-    else if (_.isPlainObject(result)) {
-      return _.mapValues(result, function (val) {
-        return makeTerminateWith$(val);
-      })
-    }
-    else {
-      return {
-        get $() {
-          return result;
-        }
-      }
-    }
-
-  }
-
 }

@@ -1,4 +1,4 @@
-import makeFluentInterface from './make-fluent-interface';
+import makeFluentInterface, {makeTerminateWith$} from './make-fluent-interface';
 import moment from 'moment';
 import faker from 'faker';
 
@@ -12,28 +12,24 @@ const intervalSecond = {
 };
 const second = 1000;
 
-
-export default makeFluentInterface({
-  inPast,
-  inFuture,
-  between
-}, {
-  interval: 'as named explained',
-  format: 'format datetime return',
-  from: 'from date: follow the format `YYYY-MM-DD` `YYYY-MM-DD HH:mm:ss`',
-  to: 'to date: follow the format `YYYY-MM-DD` `YYYY-MM-DD HH:mm:ss`',
+export default () => ({
+  inPast: makeTerminateWith$(inPast),
+  inFuture: makeTerminateWith$(inFuture),
+  between: makeFluentInterface(between, {
+    from: 'from date: follow the format `YYYY-MM-DD` `YYYY-MM-DD HH:mm:ss`',
+    to: 'to date: follow the format `YYYY-MM-DD` `YYYY-MM-DD HH:mm:ss`',
+  })
 });
 
-
-function inPast({
+function inPast(
   interval = '1day'
-}) {
+) {
   return new Date(Date.now() - randomIntervalIn(interval));
 }
 
-function inFuture({
+function inFuture(
   interval = '1day'
-}) {
+) {
   return new Date(Date.now() + randomIntervalIn(interval));
 }
 
