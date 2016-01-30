@@ -28,7 +28,6 @@ describe('Compile with value generated', () => {
 
     expect(typeof data).toEqual('object');
     expect(JSON.stringify(data)).not.toContain('objectId');
-    console.log(data);
 
   });
 

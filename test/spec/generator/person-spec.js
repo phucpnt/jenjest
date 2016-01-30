@@ -9,7 +9,6 @@ describe('generator person info >>', () => {
   it('should gen first_name', () => {
 
     var firstName = person().gender('male').name().first_name().$;
-    console.log(firstName);
     expect(typeof firstName).toEqual('string', 'First name');
 
   });
@@ -17,7 +16,6 @@ describe('generator person info >>', () => {
   it('should gen address.country', () => {
 
     var country = person().address().country().$;
-    console.log(country);
     expect(typeof country).toEqual('string', 'Country');
 
   })

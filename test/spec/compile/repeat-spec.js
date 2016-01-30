@@ -8,6 +8,8 @@ import makeRepeatCompile from '../../../src/compile/repeat'
 import makeValueGenerateCompile from '../../../src/compile/value-generate'
 import makeContextFunctionCompile from '../../../src/compile/context-function'
 
+import ObjectId from '../../../src/generator/object-id'
+
 
 describe('Compile with repeat generator', () => {
   var finalCompile = makeRepeatCompile()(makeCompile());
@@ -16,7 +18,6 @@ describe('Compile with repeat generator', () => {
     var generate = finalCompile()(require('../../resources/repeat/simple.jsample.txt'));
 
     var data = generate();
-    console.log(JSON.stringify(data, null, 2));
     expect(typeof data).toEqual('object');
 
   });
@@ -25,7 +26,6 @@ describe('Compile with repeat generator', () => {
     var generate= finalCompile()(require('../../resources/repeat/nested.jsample.txt'));
     var data = generate();
 
-    console.log(JSON.stringify(data, null, 2));
     expect(typeof data).toEqual('object');
 
   });
@@ -35,7 +35,7 @@ describe('Compile with repeat generator', () => {
     var finalCompile = _.flowRight(
         makeRepeatCompile(),
         makeValueGenerateCompile({
-          objectId: require('../../../src/generator/object-id')
+          objectId: ObjectId
         })
     )(makeCompile());
 
@@ -43,7 +43,6 @@ describe('Compile with repeat generator', () => {
     var data = generate()
 
     var jsonData = JSON.stringify(data, null, 2);
-    console.log(jsonData);
     expect(typeof data).toEqual('object');
     expect(jsonData).not.toContain('objectId');
 
@@ -60,7 +59,6 @@ describe('Compile with repeat generator', () => {
     var data = generate();
 
     var jsonData = JSON.stringify(data, null, 2);
-    console.log(jsonData);
     expect(jsonData).toContain('Hello Phuc PNT');
 
   });
@@ -70,16 +68,16 @@ describe('Compile with repeat generator', () => {
     var finalCompile = _.flowRight(
         makeRepeatCompile(), // should be first
         makeValueGenerateCompile({
-          objectId: require('../../../src/generator/object-id')
+          objectId: ObjectId
         }),
         makeContextFunctionCompile()
     )(makeCompile());
+
 
     var generate = finalCompile()(require('../../resources/repeat/function-context.jsample.txt'));
     var data = generate();
 
     var jsonData = JSON.stringify(data, null, 2);
-    console.log(jsonData);
     expect(typeof data).toEqual('object');
     expect(jsonData).toContain('Hello Phuc PNT');
     expect(jsonData).not.toContain('objectId');
