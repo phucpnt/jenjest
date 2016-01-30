@@ -3,7 +3,7 @@
 Given the schema for the generated object. Named as `A` string
 ```
 {
-  field1: '{{random().min(1).max(10).$}}' // random field value
+  field1: '{{float().min(1).max(10).$}}' // random field value
   field2: [
     repeat(5): { // repeater builder
         field21: '{{random().float().min(0).max(1).$}}'
@@ -23,9 +23,7 @@ Given the schema for the generated object. Named as `A` string
 ```
 
 Sketching solutions:
-
 ```
-
 compose(
 randomValueGenerator,
 repeaterGenerator,
@@ -33,8 +31,4 @@ functionalGenerator
 )(compile)(A)
 
 ```
-
-
-
-
-
+should produce the js object as schema description.

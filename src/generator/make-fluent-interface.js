@@ -31,13 +31,11 @@ export function makeTerminateWith$(fn) {
 
     if (typeof result === 'function') {
       return makeTerminateWith$(result);
-    }
-    else if (_.isPlainObject(result)) {
-      return _.mapValues(result, function (val) {
+    } else if (_.isPlainObject(result)) {
+      return _.mapValues(result, function(val) {
         return makeTerminateWith$(val);
       })
-    }
-    else {
+    } else {
       return {
         get $() {
           return result;
@@ -67,12 +65,14 @@ function makeFluentForApi(api, attrsWithDescription) {
 }
 
 function makeFluentForFun(fn, attrsWithDescription) {
-  return () => {
+  return (...args) => {
     var obj = makeFluentObj(attrsWithDescription);
 
-    Object.defineProperty(obj, "$", {get: function(){
-      return fn.call(null, this._attrs);
-    }});
+    Object.defineProperty(obj, "$", {
+      get: function() {
+        return fn.call(null, ...args, this._attrs);
+      }
+    });
 
     return obj;
   };
@@ -80,9 +80,14 @@ function makeFluentForFun(fn, attrsWithDescription) {
 
 
 function makeFluentObj(attrsWithDescription) {
-  var obj = {_attrs: {}};
-  _.forEach(attrsWithDescription, function (description, key) {
+  var obj = {
+    _attrs: {}
+  };
+  _.forEach(attrsWithDescription, function(description, key) {
     obj[key] = ((attr) => (configVal) => {
+      if (typeof configVal === 'undefined') {
+        configVal = true;
+      }
       obj._attrs[attr] = configVal;
       return obj;
     })(key);
