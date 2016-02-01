@@ -22,4 +22,8 @@ describe('generator date >>', () => {
     expect(moment(date).isBefore(moment())).toBe(true, date.toString());
     expect(moment(date).isBefore(moment('2016-01-23'))).toBe(true, date.toString());
   });
+  it('support format result', () => {
+    let date = gDate().inFuture('1day').format('YYYY-MM-DD').$;
+    expect(/\d{4}-\d{2}-\d{2}/i.test(date)).toBe(true);
+  })
 })

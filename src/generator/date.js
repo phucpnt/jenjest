@@ -1,4 +1,7 @@
-import makeFluentInterface, {makeTerminateWith$} from './make-fluent-interface';
+import makeFluentInterface, {
+  makeTerminateWith$
+}
+from './make-fluent-interface';
 import moment from 'moment';
 import faker from 'faker';
 
@@ -13,29 +16,47 @@ const intervalSecond = {
 const second = 1000;
 
 export default () => ({
-  inPast: makeTerminateWith$(inPast),
-  inFuture: makeTerminateWith$(inFuture),
+  inPast: makeFluentInterface(inPast, {
+    format: 'format return date'
+  }),
+  inFuture: makeFluentInterface(inFuture, {
+    format: 'format return date'
+  }),
   between: makeFluentInterface(between, {
     from: 'from date: follow the format `YYYY-MM-DD` `YYYY-MM-DD HH:mm:ss`',
     to: 'to date: follow the format `YYYY-MM-DD` `YYYY-MM-DD HH:mm:ss`',
+    format: 'format return date',
   })
 });
 
 function inPast(
-  interval = '1day'
+  interval = '1day', {
+    format = null
+  }
 ) {
-  return new Date(Date.now() - randomIntervalIn(interval));
+  const result = new Date(Date.now() - randomIntervalIn(interval));
+  if (format !== null) {
+    return moment(result).format(format);
+  }
+  return result;
 }
 
 function inFuture(
-  interval = '1day'
+  interval = '1day', {
+    format = null
+  }
 ) {
-  return new Date(Date.now() + randomIntervalIn(interval));
+  const result = new Date(Date.now() + randomIntervalIn(interval));
+  if (format !== null) {
+    return moment(result).format(format);
+  }
+  return result;
 }
 
 function between({
   from = 'now',
-    to = 'tomorrow'
+    to = 'tomorrow',
+    format = null
 }) {
   let dateFrom = parseDateStr(from);
   let dateTo = parseDateStr(to);
@@ -49,6 +70,9 @@ function between({
   let genDate = new Date();
   genDate.setTime(result);
 
+  if (format !== null) {
+    return moment(genDate).format(format);
+  }
   return genDate;
 }
 
@@ -58,7 +82,7 @@ function parseDateStr(str) {
     return new Date();
   }
 
-  let interval= parseIntervalStr(str);
+  let interval = parseIntervalStr(str);
   if (interval !== null) {
     return new Date(Date.now() + interval);
   }
@@ -94,5 +118,19 @@ function randomIntervalIn(intervalStr) {
     max: Math.abs(parsedInterval),
     precision: second,
   });
-  return parsedInterval < 0 ? -randomInterval: parsedInterval;
+  return parsedInterval < 0 ? -randomInterval : parsedInterval;
 }
+
+// function makeFormattableResult(fun) { // @todo: do not use
+//
+//   return (...args, {
+//     formatStr = null
+//   }) => {
+//     const result = fun(...args);
+//     if (formatStr !== null) {
+//       return moment(result).format(formatStr);
+//     }
+//     return result;
+//   }
+//
+// }
