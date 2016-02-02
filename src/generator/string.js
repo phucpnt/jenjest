@@ -11,7 +11,7 @@ export default makeFluentInterface({
 
 
 function word({amount = 3}){
-  return faker.lorem.word(amount);
+  return faker.lorem.words(amount);
 }
 
 function sentence({amount = 3}){

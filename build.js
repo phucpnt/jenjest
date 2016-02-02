@@ -1,5 +1,6 @@
 var fs = require("fs");
 var browserify = require("browserify");
+var babelify = require('babelify');
 
 try{
   fs.statSync('./dist');
@@ -10,8 +11,12 @@ try{
 }
 
 browserify("./src/index.js", {
-  standalone: 'jserator'
+  standalone: 'jserator',
+  debug: true,
 })
-.transform("babelify", {presets: ['es2015', 'stage-0']})
+.transform(babelify.configure({
+  presets: ['es2015', 'stage-0'],
+  sourceMap: true,
+}))
 .bundle()
 .pipe(fs.createWriteStream("./dist/jserator.js"));

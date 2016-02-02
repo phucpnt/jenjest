@@ -10,9 +10,9 @@ export default () => (next) => (...availFuns) => (src) => {
   var generate = next(...availFuns, 'directive_repeater');
 
   return (...args) => {
-    var {parse, directive_repeater} = directive();
+    let {parse, directive_repeater} = directive();
 
-    var directiveExec = (src) => {
+    function directiveExec (src) {
       return generate(src)(...args, directive_repeater(directiveExec));
     };
 
@@ -124,4 +124,3 @@ function directive() {
     directive_repeater
   };
 }
-

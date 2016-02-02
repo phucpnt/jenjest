@@ -2,6 +2,8 @@
  * Created by Phuc on 12/17/2015.
  */
 
+import _ from 'lodash';
+
 /**
  * This module provide allow generated value built with function.
  * The function allow use this as the closest object where it was wrapped in
@@ -23,21 +25,25 @@ export default () => (next) => (...availFuns) => (src) => {
 
 function iterateObjOnFn(obj) {
 
-  var valFunKeys = [], valObjKeys = [];
+  if (obj !== null && typeof obj !== 'undefined') {
 
-  Object.keys(obj).forEach((key) => {
-    typeof obj[key] === 'function' && valFunKeys.push(key);
-    typeof obj[key] === 'object' && valObjKeys.push(key);
-  });
+    let valFunKeys = [],
+      valObjKeys = [];
 
-  valFunKeys.forEach((key) => {
-    var fn = obj[key];
-    obj[key] = fn.call(obj);
-  });
+    Object.keys(obj).forEach((key) => {
+      typeof obj[key] === 'function' && valFunKeys.push(key);
+      typeof obj[key] === 'object' && valObjKeys.push(key);
+    });
 
-  valObjKeys.forEach((key) => {
-    obj[key] = iterateObjOnFn(obj[key]);
-  });
+    valFunKeys.forEach((key) => {
+      let fn = obj[key];
+      obj[key] = fn.call(obj);
+    });
+
+    valObjKeys.forEach((key) => {
+      obj[key] = iterateObjOnFn(obj[key]);
+    });
+  }
 
   return obj;
 }

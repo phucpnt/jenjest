@@ -1,0 +1,40 @@
+{
+  uuid: objectId().$,
+  title: gString().word().$,
+  description: gString().paragraph().$, // new
+  createdAt: date().inPast('7day').$, // new
+  updatedAt: date().inPast('7day').$,
+  checklist: [
+    {
+      'repeat(5)': {
+        title: gString().word().$,
+        isCompleted: 0
+      }
+    }
+  ],
+  dueDate: emptiable().or(date().between().from('+1day').to('+7day')).$,
+  dueDateFlexi: emptiable().or(pickOne([ // new
+    'in a week',
+    'in a month',
+    'in next month',
+    'in next 3 month',
+    'in a year',
+    'in next 5 year',
+    'someday'
+  ])).$,
+  nooze: emptiable().or(pickOne([
+    'at least a day',
+    'at least a week',
+    'at least a month',
+    'every day at',
+    'every week at',
+  ])).$,
+  noozePayLoad: null,
+  remindAt: null,
+  remindAtPayload: null,
+  priority: emptiable().or(float().min(1).max(5)).$,
+  syncedWith: [
+    {serviceName: 'evernote', id:objectId().$, date: date().$}
+  ],
+  originSrc: emptiable().or(gString().word()).$
+}

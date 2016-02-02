@@ -3,12 +3,12 @@ import makeFluentInterface from './make-fluent-interface';
 
 export default makeFluentInterface(({or= null, val= null, chance=30}) => {
 
-  var isEmpty = chance > faker.random().number({min: 1, max:100});
+  var isEmpty = chance > faker.random.number({min: 1, max:100});
   if(isEmpty){
     return val;
   }
   else{
-    return or;
+    return typeof(or.$) !=='undefined' ? or.$ : or;
   }
 
 }, {
