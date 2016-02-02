@@ -22,6 +22,16 @@
     'in next 5 year',
     'someday'
   ])).$,
+  label: [
+    {
+      'repeat(9)': {
+        title: gString().word().$,
+        color: pickOne([
+          '#123456', '#fff666'
+        ]).$
+      }
+    }
+  ],
   nooze: emptiable().or(pickOne([
     'at least a day',
     'at least a week',

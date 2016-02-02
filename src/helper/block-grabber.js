@@ -37,7 +37,7 @@ function createBlockGrabber(startRegex, makePlaceHolder) {
 
     return {
       parsedCode: code.replace(codeBlock, placeHolder),
-      nextSearchPos: (startBlock - 1) + (placeHolder.length)
+      nextSearchPos: (startBlock - 1) + (placeHolder+'').length
     };
 
   }
@@ -57,7 +57,6 @@ function createBlockGrabber(startRegex, makePlaceHolder) {
 
     while (!end) {
       var result = parseOne(parsedSrc);
-
       if (result.parsedCode) {
         parsedSrc = result.parsedCode;
       }

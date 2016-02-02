@@ -52,8 +52,8 @@ export default () => (next) => (...availFuns) => (src) => {
  */
 function directive() {
 
-  var repeatIndicatorRegex = /'repeat\(\d+\)'\s*:\s*\{/ig;
-  var repeatArrayRegex = /\[\s*\{\s*'repeat\((\d+)\)'\s*:\s*(\d+)\s*\}\s*\]/ig;
+  var repeatIndicatorRegex = /['"]repeat\((\d+)\)['"]\s*:\s*\{/ig;
+  var repeatArrayRegex = /\[\s*\{\s*['"]repeat\((\d+)\)['"]\s*:\s*(\d+)\s*\}\s*\]/ig;
 
   var parsedBlocks = [];
   var cleanParsedBlocks = [];
