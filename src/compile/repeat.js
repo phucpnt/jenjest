@@ -55,12 +55,12 @@ export default () => (next) => (...availFuns) => (src) => {
  */
 function directive() {
 
-  var repeatIndicatorRegex = /['"]repeat\((\d+),?(\d+)?\)['"]\s*:\s*\{/ig;
-  var repeatArrayRegex = /\[\s*\{\s*['"]repeat\((\d+),?(\d+)?\)['"]\s*:\s*(\d+)\s*\}\s*\]/ig;
+  let repeatIndicatorRegex = /['"]repeat\((\d+),?\s*(\d+)?\)['"]\s*:\s*\{/ig;
+  let repeatArrayRegex = /\[\s*\{\s*['"]repeat\((\d+),?\s*(\d+)?\)['"]\s*:\s*(\d+)\s*\}\s*\]/ig;
 
-  var parsedBlocks = [];
-  var cleanParsedBlocks = [];
-  var parser = makeBlockParser(repeatIndicatorRegex, makePlaceHolder);
+  let parsedBlocks = [];
+  let cleanParsedBlocks = [];
+  let parser = makeBlockParser(repeatIndicatorRegex, makePlaceHolder);
 
   function makePlaceHolder(index) {
     return index;

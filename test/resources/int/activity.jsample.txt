@@ -24,7 +24,7 @@
   ])).$,
   label: [
     {
-      'repeat(1,9)': {
+      'repeat(1, 9)': {
         title: gString().word().$,
         color: pickOne([
           '#123456', '#fff666'
