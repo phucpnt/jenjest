@@ -14,6 +14,7 @@ fdescribe('Integration test', () => {
 
     let demo1 = generate();
     expect(typeof demo1).toEqual('object');
+    console.log(JSON.stringify(demo1, null, 2));
   })
 
 });

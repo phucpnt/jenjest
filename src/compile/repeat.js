@@ -10,9 +10,12 @@ export default () => (next) => (...availFuns) => (src) => {
   var generate = next(...availFuns, 'directive_repeater');
 
   return (...args) => {
-    let {parse, directive_repeater} = directive();
+    let {
+      parse,
+      directive_repeater
+    } = directive();
 
-    function directiveExec (src) {
+    function directiveExec(src) {
       return generate(src)(...args, directive_repeater(directiveExec));
     };
 
@@ -52,8 +55,8 @@ export default () => (next) => (...availFuns) => (src) => {
  */
 function directive() {
 
-  var repeatIndicatorRegex = /['"]repeat\((\d+)\)['"]\s*:\s*\{/ig;
-  var repeatArrayRegex = /\[\s*\{\s*['"]repeat\((\d+)\)['"]\s*:\s*(\d+)\s*\}\s*\]/ig;
+  var repeatIndicatorRegex = /['"]repeat\((\d+),?(\d+)?\)['"]\s*:\s*\{/ig;
+  var repeatArrayRegex = /\[\s*\{\s*['"]repeat\((\d+),?(\d+)?\)['"]\s*:\s*(\d+)\s*\}\s*\]/ig;
 
   var parsedBlocks = [];
   var cleanParsedBlocks = [];
@@ -82,8 +85,12 @@ function directive() {
         parsedBlocks = parsedBlocks.concat(nuBlocks.slice(parsedBlocks.length));
       }
 
-      return srcCode.replace(repeatArrayRegex, (match, p1, p2) => {
-        return '[].concat(directive_repeater(' + [p1, p2].join(',') + '))';
+      return srcCode.replace(repeatArrayRegex, (match, p1, p2, p3) => {
+        let repeaterParams = [p1, p3];
+        if (p2) {
+          repeaterParams.push(p2);
+        }
+        return '[].concat(directive_repeater(' + repeaterParams.join(',') + '))';
       });
 
     }
@@ -105,11 +112,17 @@ function directive() {
 
   function directive_repeater(generator) {
 
-    return (numRepeat, blockIndex) => {
+    return (numRepeat, blockIndex, maxRepeat) => {
 
-      var results = [];
-      var parsedCode = cleanParsedBlocks[blockIndex];
-      for (var i = 0; i < numRepeat; i++) {
+      let results = [];
+      let parsedCode = cleanParsedBlocks[blockIndex];
+
+      let randomRepeat = numRepeat;
+      if (maxRepeat && !isNaN(maxRepeat)) {
+        randomRepeat = Math.round(Math.random() * (maxRepeat - numRepeat) + numRepeat);
+      }
+
+      for (var i = 0; i < randomRepeat; i++) {
         results.push(generator(parsedCode));
       }
       return results;
