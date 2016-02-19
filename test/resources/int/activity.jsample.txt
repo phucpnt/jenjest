@@ -4,11 +4,26 @@
   description: gString().paragraph().$, // new
   createdAt: date().inPast('7day').$, // new
   updatedAt: date().inPast('7day').$,
-  checklist: [
+  label: [
     {
-      'repeat(5)': {
+      'repeat(1, 9)': {
         title: gString().word().$,
-        isCompleted: 0
+        color: pickOne(['#fffeee', '#12345']).$,
+      }
+    }
+  ],
+  checklists: [
+    {
+      'repeat(2, 5)': {
+        title: gString().word().$,
+        items: [
+          {
+            'repeat(1, 9)': {
+              title: gString().word(9).$,
+              status: pickOne([0, 1]).$
+            }
+          }
+        ]
       }
     }
   ],
@@ -22,16 +37,6 @@
     'in next 5 year',
     'someday'
   ])).$,
-  label: [
-    {
-      'repeat(1, 9)': {
-        title: gString().word().$,
-        color: pickOne([
-          '#123456', '#fff666'
-        ]).$
-      }
-    }
-  ],
   nooze: emptiable().or(pickOne([
     'at least a day',
     'at least a week',
