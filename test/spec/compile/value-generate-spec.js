@@ -2,7 +2,6 @@
  * Created by Phuc on 12/15/2015.
  */
 
-
 import makeCompile from '../../../src/compile'
 import makeValueGenerateCompile from '../../../src/compile/value-generate'
 import ObjectId from '../../../src/generator/object-id'
@@ -16,8 +15,8 @@ describe('Compile with value generated', () => {
     var generate = finalCompile()(require('../../resources/json-generator.jsample.txt'));
     var data = generate();
 
-    expect(typeof data).toEqual('object');
-    expect(JSON.stringify(data)).not.toContain('objectId');
+    expect(typeof data).to.equal('object');
+    expect(JSON.stringify(data)).not.to.contain('objectId');
 
   });
 
@@ -26,8 +25,8 @@ describe('Compile with value generated', () => {
     var generate = finalCompile()(require('../../resources/json-generator-direct-field.jsample.txt'));
     var data = generate();
 
-    expect(typeof data).toEqual('object');
-    expect(JSON.stringify(data)).not.toContain('objectId');
+    expect(typeof data).to.equal('object');
+    expect(JSON.stringify(data)).not.to.contain('objectId');
 
   });
 

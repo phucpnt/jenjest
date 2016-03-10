@@ -2,10 +2,12 @@
  * Created by Phuc on 12/11/2015.
  */
 
-import makeGenerator from '../../src/index'
+import makeGenerator from '../../src/index';
+import {expect} from 'chai';
+import fs from 'fs';
 
 
-fdescribe('Integration test', () => {
+describe('Integration test', () => {
 
   it('should work probably', () => {
 
@@ -13,7 +15,7 @@ fdescribe('Integration test', () => {
     const generate = makeGenerator(exampleStr);
 
     let demo1 = generate();
-    expect(typeof demo1).toEqual('object');
+    expect(typeof demo1).to.equal('object');
     console.log(JSON.stringify(demo1, null, 2));
   })
 

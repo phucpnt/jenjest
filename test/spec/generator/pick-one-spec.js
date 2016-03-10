@@ -7,7 +7,7 @@ describe('generator pick one >>', () => {
     let options = ['apple', 'banana', 'cherry'];
     let result = pickOne(options).$;
 
-    expect(options.indexOf(result) >= 0).toBe(true);
+    expect(options.indexOf(result) >= 0).to.be.true;
 
   });
 

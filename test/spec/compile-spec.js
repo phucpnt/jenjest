@@ -12,7 +12,7 @@ describe('Basic compile', () => {
 
     var exampleStr = require('../resources/json-generator.jsample.txt');
     var generate= compile()(exampleStr);
-    expect(typeof generate()).toEqual('object');
+    expect(typeof generate()).to.equal('object');
 
   })
 

@@ -1,5 +1,6 @@
 /**
  * Created by Phuc on 9/9/2015.
+ * Deprecated do not used
  */
 
 var gulp = require('gulp');

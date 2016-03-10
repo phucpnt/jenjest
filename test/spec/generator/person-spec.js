@@ -9,14 +9,14 @@ describe('generator person info >>', () => {
   it('should gen first_name', () => {
 
     var firstName = person().gender('male').name().first_name().$;
-    expect(typeof firstName).toEqual('string', 'First name');
+    expect(typeof firstName).to.equal('string', 'First name');
 
   });
 
   it('should gen address.country', () => {
 
     var country = person().address().country().$;
-    expect(typeof country).toEqual('string', 'Country');
+    expect(typeof country).to.equal('string', 'Country');
 
   })
 
