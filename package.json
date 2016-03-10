@@ -6,7 +6,7 @@
   "scripts": {
     "test": "mocha",
     "test-dev": "mocha --watch",
-    "build": "node build.js",
+    "build": "browserify ./src/index.js -d -t [babelify] | exorcist dist/jserator.js.map > dist/jserator.js",
     "release": "node release.js && git add . && git commit -m \"build release\""
   },
   "keywords": [
