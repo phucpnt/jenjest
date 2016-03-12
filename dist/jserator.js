@@ -62434,7 +62434,7 @@ function directive() {
   };
 }
 
-},{"../helper/block-grabber":934,"lodash":918}],924:[function(require,module,exports){
+},{"../helper/block-grabber":935,"lodash":918}],924:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -63087,6 +63087,49 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _faker = require('faker');
+
+var _faker2 = _interopRequireDefault(_faker);
+
+var _makeFluentInterface = require('./make-fluent-interface');
+
+var _makeFluentInterface2 = _interopRequireDefault(_makeFluentInterface);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = (0, _makeFluentInterface2.default)(function (_ref) {
+  var inList = _ref.inList;
+  var between = _ref.between;
+  var to = _ref.to;
+  var _ref$noDuplicate = _ref.noDuplicate;
+  var noDuplicate = _ref$noDuplicate === undefined ? true : _ref$noDuplicate;
+
+  var randAmount = _faker2.default.random.number({ min: between, max: to });
+  var pickList = [];
+  var tmpList = [].concat(inList);
+  for (var i = 0; i < randAmount; i++) {
+    var pickIndex = _faker2.default.random.number({ min: 0, max: tmpList.length - 1 });
+    pickList.push(tmpList[pickIndex]);
+
+    if (noDuplicate) {
+      tmpList.splice(pickIndex, 1);
+    }
+  }
+  return pickList;
+}, {
+  inList: 'list of elements to pick',
+  between: 'random lower bound amount',
+  to: 'random upper bound amount',
+  noDuplicate: 'no duplicated in picked list'
+});
+
+},{"./make-fluent-interface":929,"faker":1}],934:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
 var _makeFluentInterface = require('./make-fluent-interface');
 
 var _makeFluentInterface2 = _interopRequireDefault(_makeFluentInterface);
@@ -63127,7 +63170,7 @@ function paragraph(_ref3) {
   return _faker2.default.lorem.paragraphs(amount);
 }
 
-},{"./make-fluent-interface":929,"faker":1}],934:[function(require,module,exports){
+},{"./make-fluent-interface":929,"faker":1}],935:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -63206,7 +63249,7 @@ function createBlockGrabber(startRegex, makePlaceHolder) {
 
 exports.default = createBlockGrabber;
 
-},{}],935:[function(require,module,exports){
+},{}],936:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -63222,7 +63265,8 @@ exports.default = function () {
     date: _date2.default,
     pickOne: _pickOne2.default,
     gString: _string2.default,
-    emptiable: _emptiable2.default
+    emptiable: _emptiable2.default,
+    pick: _pick2.default
   });
 };
 
@@ -63262,9 +63306,13 @@ var _emptiable = require('../generator/emptiable');
 
 var _emptiable2 = _interopRequireDefault(_emptiable);
 
+var _pick = require('../generator/pick');
+
+var _pick2 = _interopRequireDefault(_pick);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-},{"../compile/value-generate":924,"../generator/date":925,"../generator/emptiable":926,"../generator/float":927,"../generator/index":928,"../generator/object-id":930,"../generator/person":931,"../generator/pick-one":932,"../generator/string":933}],936:[function(require,module,exports){
+},{"../compile/value-generate":924,"../generator/date":925,"../generator/emptiable":926,"../generator/float":927,"../generator/index":928,"../generator/object-id":930,"../generator/person":931,"../generator/pick":933,"../generator/pick-one":932,"../generator/string":934}],937:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -63315,6 +63363,6 @@ function makeGenerator(src) {
   };
 }
 
-},{"./compile":921,"./compile/context-function":922,"./compile/repeat":923,"./helper/make-value-generator":935,"lodash":918}]},{},[936])(936)
+},{"./compile":921,"./compile/context-function":922,"./compile/repeat":923,"./helper/make-value-generator":936,"lodash":918}]},{},[937])(937)
 });
 //# sourceMappingURL=jserator.js.map

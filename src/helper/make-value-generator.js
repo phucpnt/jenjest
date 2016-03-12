@@ -8,6 +8,7 @@ import gDate from '../generator/date';
 import pickOne from '../generator/pick-one';
 import gString from '../generator/string';
 import emptiable from '../generator/emptiable';
+import pick from '../generator/pick';
 
 export default function (){
   return makeValueGenerateCompile({
@@ -19,5 +20,6 @@ export default function (){
     pickOne,
     gString,
     emptiable,
+    pick,
   });
 }
