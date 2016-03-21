@@ -9,6 +9,8 @@ import pickOne from '../generator/pick-one';
 import gString from '../generator/string';
 import emptiable from '../generator/emptiable';
 import pick from '../generator/pick';
+import img from '../generator/img';
+import resource from '../generator/resource';
 
 export default function (){
   return makeValueGenerateCompile({
@@ -21,5 +23,7 @@ export default function (){
     gString,
     emptiable,
     pick,
+    img,
+    resource,
   });
 }

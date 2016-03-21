@@ -25102,7 +25102,7 @@ module["exports"] = [
   "გუგულა",
   "გუგული",
   "გუგუნა",
-  "გუკა",
+  "გუკ���",
   "გულარისა",
   "გულვარდი",
   "გულვარდისა",
@@ -62356,12 +62356,25 @@ exports.default = function () {
 
 function directive() {
 
-  var repeatIndicatorRegex = /['"]repeat\((\d+),?\s*(\d+)?\)['"]\s*:\s*\{/ig;
+  /**
+   * match: 'repeat(0, 1): {...}'
+   */
+  var repeatIndicatorObjectRegex = /['"]repeat\((\d+),?\s*(\d+)?\)['"]\s*:\s*\{/ig;
+
+  /**
+   * match:
+   * 'repeat(0, 1): objectId().$'
+   *
+   * or 'repeat(0, 1): "person().firstName().$ person().lastName().$"'
+   * TODO
+   */
+  var repeatIndicatorUnitRegex = /['"]repeat\((\d+),?\s*(\d+)?\)['"]\s*:[^\{",]+/ig;
+
   var repeatArrayRegex = /\[\s*\{\s*['"]repeat\((\d+),?\s*(\d+)?\)['"]\s*:\s*(\d+)\s*\}\s*\]/ig;
 
   var parsedBlocks = [];
   var cleanParsedBlocks = [];
-  var parser = (0, _blockGrabber2.default)(repeatIndicatorRegex, makePlaceHolder);
+  var parser = (0, _blockGrabber2.default)(repeatIndicatorObjectRegex, makePlaceHolder);
 
   function makePlaceHolder(index) {
     return index;
@@ -62434,7 +62447,7 @@ function directive() {
   };
 }
 
-},{"../helper/block-grabber":935,"lodash":918}],924:[function(require,module,exports){
+},{"../helper/block-grabber":937,"lodash":918}],924:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -62494,7 +62507,7 @@ exports.default = function (generators) {
   };
 };
 
-},{"../generator/make-fluent-interface":929,"lodash":918}],925:[function(require,module,exports){
+},{"../generator/make-fluent-interface":930,"lodash":918}],925:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -62652,7 +62665,7 @@ function randomIntervalIn(intervalStr) {
 //
 // }
 
-},{"./make-fluent-interface":929,"faker":1,"moment":919}],926:[function(require,module,exports){
+},{"./make-fluent-interface":930,"faker":1,"moment":919}],926:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -62672,25 +62685,25 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 exports.default = (0, _makeFluentInterface2.default)(function (_ref) {
   var _ref$or = _ref.or;
   var or = _ref$or === undefined ? null : _ref$or;
-  var _ref$val = _ref.val;
-  var val = _ref$val === undefined ? null : _ref$val;
+  var _ref$emptyValue = _ref.emptyValue;
+  var emptyValue = _ref$emptyValue === undefined ? null : _ref$emptyValue;
   var _ref$chance = _ref.chance;
   var chance = _ref$chance === undefined ? 30 : _ref$chance;
 
 
   var isEmpty = chance > _faker2.default.random.number({ min: 1, max: 100 });
   if (isEmpty) {
-    return val;
+    return emptyValue;
   } else {
     return typeof or.$ !== 'undefined' ? or.$ : or;
   }
 }, {
   chance: 'percent will return empty value',
   or: 'if not empty then return the value',
-  val: 'empty value returned'
+  emptyValue: 'empty value returned'
 });
 
-},{"./make-fluent-interface":929,"faker":1}],927:[function(require,module,exports){
+},{"./make-fluent-interface":930,"faker":1}],927:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -62748,7 +62761,36 @@ function random() {
   return Number((Math.round((Math.random() * (max - min) + min) * Math.pow(10, dec)) / Math.pow(10, dec)).toFixed(dec));
 }
 
-},{"./make-fluent-interface":929,"numeral":920}],928:[function(require,module,exports){
+},{"./make-fluent-interface":930,"numeral":920}],928:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _faker = require('faker');
+
+var _faker2 = _interopRequireDefault(_faker);
+
+var _makeFluentInterface = require('./make-fluent-interface');
+
+var _makeFluentInterface2 = _interopRequireDefault(_makeFluentInterface);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = (0, _makeFluentInterface2.default)(function (_ref) {
+  var cat = _ref.cat;
+  var w = _ref.w;
+  var h = _ref.h;
+
+  return cat === 'avatar' ? _faker2.default.image.avatar() : _faker2.default.image[cat](w, h);
+}, {
+  cat: 'category which image belongs to',
+  w: 'image width',
+  h: 'image height'
+});
+
+},{"./make-fluent-interface":930,"faker":1}],929:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -62767,7 +62809,7 @@ exports.default = function () {
   };
 };
 
-},{"lodash":918}],929:[function(require,module,exports){
+},{"lodash":918}],930:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -62881,7 +62923,7 @@ function makeFluentObj(attrsWithDescription) {
   return obj;
 }
 
-},{"lodash":918}],930:[function(require,module,exports){
+},{"lodash":918}],931:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -62983,7 +63025,7 @@ ObjectId.prototype.toString = function () {
   return '00000000'.substr(0, 8 - timestamp.length) + timestamp + '000000'.substr(0, 6 - machine.length) + machine + '0000'.substr(0, 4 - pid.length) + pid + '000000'.substr(0, 6 - increment.length) + increment;
 };
 
-},{}],931:[function(require,module,exports){
+},{}],932:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -63039,19 +63081,37 @@ function name(_ref) {
 function address() {
 
   return {
+    email: function email() {
+      return _faker2.default.internet.email();
+    },
+    website: function website() {
+      return _faker2.default.internet.url();
+    },
+    phone: function phone() {
+      return _faker2.default.phone.phoneNumber();
+    },
     city: function city() {
       return _faker2.default.address.city();
+    },
+    streetAddress: function streetAddress() {
+      return _faker2.default.address.streetAddress();
     },
     country: function country() {
       return _faker2.default.address.country();
     },
     countryCode: function countryCode() {
       return _faker2.default.address.countryCode();
+    },
+    zip: function zip() {
+      return _faker2.default.address.zipCode();
+    },
+    state: function state() {
+      return _faker2.default.address.state();
     }
   };
 }
 
-},{"./make-fluent-interface":929,"faker":1}],932:[function(require,module,exports){
+},{"./make-fluent-interface":930,"faker":1}],933:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -63080,7 +63140,7 @@ exports.default = (0, _makeFluentInterface2.default)(function (options, _ref) {
   value: 'get value from options'
 });
 
-},{"./make-fluent-interface":929,"faker":1}],933:[function(require,module,exports){
+},{"./make-fluent-interface":930,"faker":1}],934:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -63123,7 +63183,45 @@ exports.default = (0, _makeFluentInterface2.default)(function (_ref) {
   noDuplicate: 'no duplicated in picked list'
 });
 
-},{"./make-fluent-interface":929,"faker":1}],934:[function(require,module,exports){
+},{"./make-fluent-interface":930,"faker":1}],935:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _makeFluentInterface = require('./make-fluent-interface');
+
+var _makeFluentInterface2 = _interopRequireDefault(_makeFluentInterface);
+
+var _countries = require('../resource/countries.json');
+
+var _countries2 = _interopRequireDefault(_countries);
+
+var _languages = require('../resource/languages.json');
+
+var _languages2 = _interopRequireDefault(_languages);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = (0, _makeFluentInterface2.default)(function (_ref) {
+  var country = _ref.country;
+  var language = _ref.language;
+
+
+  if (country === true) {
+    return _countries2.default;
+  }
+
+  if (language === true) {
+    return _languages2.default;
+  }
+}, {
+  country: 'list of countries',
+  language: 'list of language'
+});
+
+},{"../resource/countries.json":940,"../resource/languages.json":941,"./make-fluent-interface":930}],936:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -63170,7 +63268,7 @@ function paragraph(_ref3) {
   return _faker2.default.lorem.paragraphs(amount);
 }
 
-},{"./make-fluent-interface":929,"faker":1}],935:[function(require,module,exports){
+},{"./make-fluent-interface":930,"faker":1}],937:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -63249,7 +63347,7 @@ function createBlockGrabber(startRegex, makePlaceHolder) {
 
 exports.default = createBlockGrabber;
 
-},{}],936:[function(require,module,exports){
+},{}],938:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -63266,7 +63364,9 @@ exports.default = function () {
     pickOne: _pickOne2.default,
     gString: _string2.default,
     emptiable: _emptiable2.default,
-    pick: _pick2.default
+    pick: _pick2.default,
+    img: _img2.default,
+    resource: _resource2.default
   });
 };
 
@@ -63310,9 +63410,17 @@ var _pick = require('../generator/pick');
 
 var _pick2 = _interopRequireDefault(_pick);
 
+var _img = require('../generator/img');
+
+var _img2 = _interopRequireDefault(_img);
+
+var _resource = require('../generator/resource');
+
+var _resource2 = _interopRequireDefault(_resource);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-},{"../compile/value-generate":924,"../generator/date":925,"../generator/emptiable":926,"../generator/float":927,"../generator/index":928,"../generator/object-id":930,"../generator/person":931,"../generator/pick":933,"../generator/pick-one":932,"../generator/string":934}],937:[function(require,module,exports){
+},{"../compile/value-generate":924,"../generator/date":925,"../generator/emptiable":926,"../generator/float":927,"../generator/img":928,"../generator/index":929,"../generator/object-id":931,"../generator/person":932,"../generator/pick":934,"../generator/pick-one":933,"../generator/resource":935,"../generator/string":936}],939:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -63363,6 +63471,254 @@ function makeGenerator(src) {
   };
 }
 
-},{"./compile":921,"./compile/context-function":922,"./compile/repeat":923,"./helper/make-value-generator":936,"lodash":918}]},{},[937])(937)
+},{"./compile":921,"./compile/context-function":922,"./compile/repeat":923,"./helper/make-value-generator":938,"lodash":918}],940:[function(require,module,exports){
+module.exports=[ 
+  {"name": "Afghanistan", "code": "AF"}, 
+  {"name": "Åland Islands", "code": "AX"}, 
+  {"name": "Albania", "code": "AL"}, 
+  {"name": "Algeria", "code": "DZ"}, 
+  {"name": "American Samoa", "code": "AS"}, 
+  {"name": "Andorra", "code": "AD"}, 
+  {"name": "Angola", "code": "AO"}, 
+  {"name": "Anguilla", "code": "AI"}, 
+  {"name": "Antarctica", "code": "AQ"}, 
+  {"name": "Antigua and Barbuda", "code": "AG"}, 
+  {"name": "Argentina", "code": "AR"}, 
+  {"name": "Armenia", "code": "AM"}, 
+  {"name": "Aruba", "code": "AW"}, 
+  {"name": "Australia", "code": "AU"}, 
+  {"name": "Austria", "code": "AT"}, 
+  {"name": "Azerbaijan", "code": "AZ"}, 
+  {"name": "Bahamas", "code": "BS"}, 
+  {"name": "Bahrain", "code": "BH"}, 
+  {"name": "Bangladesh", "code": "BD"}, 
+  {"name": "Barbados", "code": "BB"}, 
+  {"name": "Belarus", "code": "BY"}, 
+  {"name": "Belgium", "code": "BE"}, 
+  {"name": "Belize", "code": "BZ"}, 
+  {"name": "Benin", "code": "BJ"}, 
+  {"name": "Bermuda", "code": "BM"}, 
+  {"name": "Bhutan", "code": "BT"}, 
+  {"name": "Bolivia", "code": "BO"}, 
+  {"name": "Bosnia and Herzegovina", "code": "BA"}, 
+  {"name": "Botswana", "code": "BW"}, 
+  {"name": "Bouvet Island", "code": "BV"}, 
+  {"name": "Brazil", "code": "BR"}, 
+  {"name": "British Indian Ocean Territory", "code": "IO"}, 
+  {"name": "Brunei Darussalam", "code": "BN"}, 
+  {"name": "Bulgaria", "code": "BG"}, 
+  {"name": "Burkina Faso", "code": "BF"}, 
+  {"name": "Burundi", "code": "BI"}, 
+  {"name": "Cambodia", "code": "KH"}, 
+  {"name": "Cameroon", "code": "CM"}, 
+  {"name": "Canada", "code": "CA"}, 
+  {"name": "Cape Verde", "code": "CV"}, 
+  {"name": "Cayman Islands", "code": "KY"}, 
+  {"name": "Central African Republic", "code": "CF"}, 
+  {"name": "Chad", "code": "TD"}, 
+  {"name": "Chile", "code": "CL"}, 
+  {"name": "China", "code": "CN"}, 
+  {"name": "Christmas Island", "code": "CX"}, 
+  {"name": "Cocos (Keeling) Islands", "code": "CC"}, 
+  {"name": "Colombia", "code": "CO"}, 
+  {"name": "Comoros", "code": "KM"}, 
+  {"name": "Congo", "code": "CG"}, 
+  {"name": "Congo, The Democratic Republic of the", "code": "CD"}, 
+  {"name": "Cook Islands", "code": "CK"}, 
+  {"name": "Costa Rica", "code": "CR"}, 
+  {"name": "Cote D\"Ivoire", "code": "CI"}, 
+  {"name": "Croatia", "code": "HR"}, 
+  {"name": "Cuba", "code": "CU"}, 
+  {"name": "Cyprus", "code": "CY"}, 
+  {"name": "Czech Republic", "code": "CZ"}, 
+  {"name": "Denmark", "code": "DK"}, 
+  {"name": "Djibouti", "code": "DJ"}, 
+  {"name": "Dominica", "code": "DM"}, 
+  {"name": "Dominican Republic", "code": "DO"}, 
+  {"name": "Ecuador", "code": "EC"}, 
+  {"name": "Egypt", "code": "EG"}, 
+  {"name": "El Salvador", "code": "SV"}, 
+  {"name": "Equatorial Guinea", "code": "GQ"}, 
+  {"name": "Eritrea", "code": "ER"}, 
+  {"name": "Estonia", "code": "EE"}, 
+  {"name": "Ethiopia", "code": "ET"}, 
+  {"name": "Falkland Islands (Malvinas)", "code": "FK"}, 
+  {"name": "Faroe Islands", "code": "FO"}, 
+  {"name": "Fiji", "code": "FJ"}, 
+  {"name": "Finland", "code": "FI"}, 
+  {"name": "France", "code": "FR"}, 
+  {"name": "French Guiana", "code": "GF"}, 
+  {"name": "French Polynesia", "code": "PF"}, 
+  {"name": "French Southern Territories", "code": "TF"}, 
+  {"name": "Gabon", "code": "GA"}, 
+  {"name": "Gambia", "code": "GM"}, 
+  {"name": "Georgia", "code": "GE"}, 
+  {"name": "Germany", "code": "DE"}, 
+  {"name": "Ghana", "code": "GH"}, 
+  {"name": "Gibraltar", "code": "GI"}, 
+  {"name": "Greece", "code": "GR"}, 
+  {"name": "Greenland", "code": "GL"}, 
+  {"name": "Grenada", "code": "GD"}, 
+  {"name": "Guadeloupe", "code": "GP"}, 
+  {"name": "Guam", "code": "GU"}, 
+  {"name": "Guatemala", "code": "GT"}, 
+  {"name": "Guernsey", "code": "GG"}, 
+  {"name": "Guinea", "code": "GN"}, 
+  {"name": "Guinea-Bissau", "code": "GW"}, 
+  {"name": "Guyana", "code": "GY"}, 
+  {"name": "Haiti", "code": "HT"}, 
+  {"name": "Heard Island and Mcdonald Islands", "code": "HM"}, 
+  {"name": "Holy See (Vatican City State)", "code": "VA"}, 
+  {"name": "Honduras", "code": "HN"}, 
+  {"name": "Hong Kong", "code": "HK"}, 
+  {"name": "Hungary", "code": "HU"}, 
+  {"name": "Iceland", "code": "IS"}, 
+  {"name": "India", "code": "IN"}, 
+  {"name": "Indonesia", "code": "ID"}, 
+  {"name": "Iran, Islamic Republic Of", "code": "IR"}, 
+  {"name": "Iraq", "code": "IQ"}, 
+  {"name": "Ireland", "code": "IE"}, 
+  {"name": "Isle of Man", "code": "IM"}, 
+  {"name": "Israel", "code": "IL"}, 
+  {"name": "Italy", "code": "IT"}, 
+  {"name": "Jamaica", "code": "JM"}, 
+  {"name": "Japan", "code": "JP"}, 
+  {"name": "Jersey", "code": "JE"}, 
+  {"name": "Jordan", "code": "JO"}, 
+  {"name": "Kazakhstan", "code": "KZ"}, 
+  {"name": "Kenya", "code": "KE"}, 
+  {"name": "Kiribati", "code": "KI"}, 
+  {"name": "Korea, Democratic People\"s Republic of", "code": "KP"}, 
+  {"name": "Korea, Republic of", "code": "KR"}, 
+  {"name": "Kuwait", "code": "KW"}, 
+  {"name": "Kyrgyzstan", "code": "KG"}, 
+  {"name": "Lao People\"s Democratic Republic", "code": "LA"}, 
+  {"name": "Latvia", "code": "LV"}, 
+  {"name": "Lebanon", "code": "LB"}, 
+  {"name": "Lesotho", "code": "LS"}, 
+  {"name": "Liberia", "code": "LR"}, 
+  {"name": "Libyan Arab Jamahiriya", "code": "LY"}, 
+  {"name": "Liechtenstein", "code": "LI"}, 
+  {"name": "Lithuania", "code": "LT"}, 
+  {"name": "Luxembourg", "code": "LU"}, 
+  {"name": "Macao", "code": "MO"}, 
+  {"name": "Macedonia, The Former Yugoslav Republic of", "code": "MK"}, 
+  {"name": "Madagascar", "code": "MG"}, 
+  {"name": "Malawi", "code": "MW"}, 
+  {"name": "Malaysia", "code": "MY"}, 
+  {"name": "Maldives", "code": "MV"}, 
+  {"name": "Mali", "code": "ML"}, 
+  {"name": "Malta", "code": "MT"}, 
+  {"name": "Marshall Islands", "code": "MH"}, 
+  {"name": "Martinique", "code": "MQ"}, 
+  {"name": "Mauritania", "code": "MR"}, 
+  {"name": "Mauritius", "code": "MU"}, 
+  {"name": "Mayotte", "code": "YT"}, 
+  {"name": "Mexico", "code": "MX"}, 
+  {"name": "Micronesia, Federated States of", "code": "FM"}, 
+  {"name": "Moldova, Republic of", "code": "MD"}, 
+  {"name": "Monaco", "code": "MC"}, 
+  {"name": "Mongolia", "code": "MN"}, 
+  {"name": "Montserrat", "code": "MS"}, 
+  {"name": "Morocco", "code": "MA"}, 
+  {"name": "Mozambique", "code": "MZ"}, 
+  {"name": "Myanmar", "code": "MM"}, 
+  {"name": "Namibia", "code": "NA"}, 
+  {"name": "Nauru", "code": "NR"}, 
+  {"name": "Nepal", "code": "NP"}, 
+  {"name": "Netherlands", "code": "NL"}, 
+  {"name": "Netherlands Antilles", "code": "AN"}, 
+  {"name": "New Caledonia", "code": "NC"}, 
+  {"name": "New Zealand", "code": "NZ"}, 
+  {"name": "Nicaragua", "code": "NI"}, 
+  {"name": "Niger", "code": "NE"}, 
+  {"name": "Nigeria", "code": "NG"}, 
+  {"name": "Niue", "code": "NU"}, 
+  {"name": "Norfolk Island", "code": "NF"}, 
+  {"name": "Northern Mariana Islands", "code": "MP"}, 
+  {"name": "Norway", "code": "NO"}, 
+  {"name": "Oman", "code": "OM"}, 
+  {"name": "Pakistan", "code": "PK"}, 
+  {"name": "Palau", "code": "PW"}, 
+  {"name": "Palestinian Territory, Occupied", "code": "PS"}, 
+  {"name": "Panama", "code": "PA"}, 
+  {"name": "Papua New Guinea", "code": "PG"}, 
+  {"name": "Paraguay", "code": "PY"}, 
+  {"name": "Peru", "code": "PE"}, 
+  {"name": "Philippines", "code": "PH"}, 
+  {"name": "Pitcairn", "code": "PN"}, 
+  {"name": "Poland", "code": "PL"}, 
+  {"name": "Portugal", "code": "PT"}, 
+  {"name": "Puerto Rico", "code": "PR"}, 
+  {"name": "Qatar", "code": "QA"}, 
+  {"name": "Reunion", "code": "RE"}, 
+  {"name": "Romania", "code": "RO"}, 
+  {"name": "Russian Federation", "code": "RU"}, 
+  {"name": "Rwanda", "code": "RW"}, 
+  {"name": "Saint Helena", "code": "SH"}, 
+  {"name": "Saint Kitts and Nevis", "code": "KN"}, 
+  {"name": "Saint Lucia", "code": "LC"}, 
+  {"name": "Saint Pierre and Miquelon", "code": "PM"}, 
+  {"name": "Saint Vincent and the Grenadines", "code": "VC"}, 
+  {"name": "Samoa", "code": "WS"}, 
+  {"name": "San Marino", "code": "SM"}, 
+  {"name": "Sao Tome and Principe", "code": "ST"}, 
+  {"name": "Saudi Arabia", "code": "SA"}, 
+  {"name": "Senegal", "code": "SN"}, 
+  {"name": "Serbia and Montenegro", "code": "CS"}, 
+  {"name": "Seychelles", "code": "SC"}, 
+  {"name": "Sierra Leone", "code": "SL"}, 
+  {"name": "Singapore", "code": "SG"}, 
+  {"name": "Slovakia", "code": "SK"}, 
+  {"name": "Slovenia", "code": "SI"}, 
+  {"name": "Solomon Islands", "code": "SB"}, 
+  {"name": "Somalia", "code": "SO"}, 
+  {"name": "South Africa", "code": "ZA"}, 
+  {"name": "South Georgia and the South Sandwich Islands", "code": "GS"}, 
+  {"name": "Spain", "code": "ES"}, 
+  {"name": "Sri Lanka", "code": "LK"}, 
+  {"name": "Sudan", "code": "SD"}, 
+  {"name": "Suriname", "code": "SR"}, 
+  {"name": "Svalbard and Jan Mayen", "code": "SJ"}, 
+  {"name": "Swaziland", "code": "SZ"}, 
+  {"name": "Sweden", "code": "SE"}, 
+  {"name": "Switzerland", "code": "CH"}, 
+  {"name": "Syrian Arab Republic", "code": "SY"}, 
+  {"name": "Taiwan, Province of China", "code": "TW"}, 
+  {"name": "Tajikistan", "code": "TJ"}, 
+  {"name": "Tanzania, United Republic of", "code": "TZ"}, 
+  {"name": "Thailand", "code": "TH"}, 
+  {"name": "Timor-Leste", "code": "TL"}, 
+  {"name": "Togo", "code": "TG"}, 
+  {"name": "Tokelau", "code": "TK"}, 
+  {"name": "Tonga", "code": "TO"}, 
+  {"name": "Trinidad and Tobago", "code": "TT"}, 
+  {"name": "Tunisia", "code": "TN"}, 
+  {"name": "Turkey", "code": "TR"}, 
+  {"name": "Turkmenistan", "code": "TM"}, 
+  {"name": "Turks and Caicos Islands", "code": "TC"}, 
+  {"name": "Tuvalu", "code": "TV"}, 
+  {"name": "Uganda", "code": "UG"}, 
+  {"name": "Ukraine", "code": "UA"}, 
+  {"name": "United Arab Emirates", "code": "AE"}, 
+  {"name": "United Kingdom", "code": "GB"}, 
+  {"name": "United States", "code": "US"}, 
+  {"name": "United States Minor Outlying Islands", "code": "UM"}, 
+  {"name": "Uruguay", "code": "UY"}, 
+  {"name": "Uzbekistan", "code": "UZ"}, 
+  {"name": "Vanuatu", "code": "VU"}, 
+  {"name": "Venezuela", "code": "VE"}, 
+  {"name": "Vietnam", "code": "VN"}, 
+  {"name": "Virgin Islands, British", "code": "VG"}, 
+  {"name": "Virgin Islands, U.S.", "code": "VI"}, 
+  {"name": "Wallis and Futuna", "code": "WF"}, 
+  {"name": "Western Sahara", "code": "EH"}, 
+  {"name": "Yemen", "code": "YE"}, 
+  {"name": "Zambia", "code": "ZM"}, 
+  {"name": "Zimbabwe", "code": "ZW"} 
+]
+},{}],941:[function(require,module,exports){
+module.exports=[{"alpha2":"aa","English":"Afar"},{"alpha2":"ab","English":"Abkhazian"},{"alpha2":"ae","English":"Avestan"},{"alpha2":"af","English":"Afrikaans"},{"alpha2":"ak","English":"Akan"},{"alpha2":"am","English":"Amharic"},{"alpha2":"an","English":"Aragonese"},{"alpha2":"ar","English":"Arabic"},{"alpha2":"as","English":"Assamese"},{"alpha2":"av","English":"Avaric"},{"alpha2":"ay","English":"Aymara"},{"alpha2":"az","English":"Azerbaijani"},{"alpha2":"ba","English":"Bashkir"},{"alpha2":"be","English":"Belarusian"},{"alpha2":"bg","English":"Bulgarian"},{"alpha2":"bh","English":"Bihari languages"},{"alpha2":"bi","English":"Bislama"},{"alpha2":"bm","English":"Bambara"},{"alpha2":"bn","English":"Bengali"},{"alpha2":"bo","English":"Tibetan"},{"alpha2":"br","English":"Breton"},{"alpha2":"bs","English":"Bosnian"},{"alpha2":"ca","English":"Catalan; Valencian"},{"alpha2":"ce","English":"Chechen"},{"alpha2":"ch","English":"Chamorro"},{"alpha2":"co","English":"Corsican"},{"alpha2":"cr","English":"Cree"},{"alpha2":"cs","English":"Czech"},{"alpha2":"cu","English":"Church Slavic; Old Slavonic; Church Slavonic; Old Bulgarian; Old Church Slavonic"},{"alpha2":"cv","English":"Chuvash"},{"alpha2":"cy","English":"Welsh"},{"alpha2":"da","English":"Danish"},{"alpha2":"de","English":"German"},{"alpha2":"dv","English":"Divehi; Dhivehi; Maldivian"},{"alpha2":"dz","English":"Dzongkha"},{"alpha2":"ee","English":"Ewe"},{"alpha2":"el","English":"Greek, Modern (1453-)"},{"alpha2":"en","English":"English"},{"alpha2":"eo","English":"Esperanto"},{"alpha2":"es","English":"Spanish; Castilian"},{"alpha2":"et","English":"Estonian"},{"alpha2":"eu","English":"Basque"},{"alpha2":"fa","English":"Persian"},{"alpha2":"ff","English":"Fulah"},{"alpha2":"fi","English":"Finnish"},{"alpha2":"fj","English":"Fijian"},{"alpha2":"fo","English":"Faroese"},{"alpha2":"fr","English":"French"},{"alpha2":"fy","English":"Western Frisian"},{"alpha2":"ga","English":"Irish"},{"alpha2":"gd","English":"Gaelic; Scottish Gaelic"},{"alpha2":"gl","English":"Galician"},{"alpha2":"gn","English":"Guarani"},{"alpha2":"gu","English":"Gujarati"},{"alpha2":"gv","English":"Manx"},{"alpha2":"ha","English":"Hausa"},{"alpha2":"he","English":"Hebrew"},{"alpha2":"hi","English":"Hindi"},{"alpha2":"ho","English":"Hiri Motu"},{"alpha2":"hr","English":"Croatian"},{"alpha2":"ht","English":"Haitian; Haitian Creole"},{"alpha2":"hu","English":"Hungarian"},{"alpha2":"hy","English":"Armenian"},{"alpha2":"hz","English":"Herero"},{"alpha2":"ia","English":"Interlingua (International Auxiliary Language Association)"},{"alpha2":"id","English":"Indonesian"},{"alpha2":"ie","English":"Interlingue; Occidental"},{"alpha2":"ig","English":"Igbo"},{"alpha2":"ii","English":"Sichuan Yi; Nuosu"},{"alpha2":"ik","English":"Inupiaq"},{"alpha2":"io","English":"Ido"},{"alpha2":"is","English":"Icelandic"},{"alpha2":"it","English":"Italian"},{"alpha2":"iu","English":"Inuktitut"},{"alpha2":"ja","English":"Japanese"},{"alpha2":"jv","English":"Javanese"},{"alpha2":"ka","English":"Georgian"},{"alpha2":"kg","English":"Kongo"},{"alpha2":"ki","English":"Kikuyu; Gikuyu"},{"alpha2":"kj","English":"Kuanyama; Kwanyama"},{"alpha2":"kk","English":"Kazakh"},{"alpha2":"kl","English":"Kalaallisut; Greenlandic"},{"alpha2":"km","English":"Central Khmer"},{"alpha2":"kn","English":"Kannada"},{"alpha2":"ko","English":"Korean"},{"alpha2":"kr","English":"Kanuri"},{"alpha2":"ks","English":"Kashmiri"},{"alpha2":"ku","English":"Kurdish"},{"alpha2":"kv","English":"Komi"},{"alpha2":"kw","English":"Cornish"},{"alpha2":"ky","English":"Kirghiz; Kyrgyz"},{"alpha2":"la","English":"Latin"},{"alpha2":"lb","English":"Luxembourgish; Letzeburgesch"},{"alpha2":"lg","English":"Ganda"},{"alpha2":"li","English":"Limburgan; Limburger; Limburgish"},{"alpha2":"ln","English":"Lingala"},{"alpha2":"lo","English":"Lao"},{"alpha2":"lt","English":"Lithuanian"},{"alpha2":"lu","English":"Luba-Katanga"},{"alpha2":"lv","English":"Latvian"},{"alpha2":"mg","English":"Malagasy"},{"alpha2":"mh","English":"Marshallese"},{"alpha2":"mi","English":"Maori"},{"alpha2":"mk","English":"Macedonian"},{"alpha2":"ml","English":"Malayalam"},{"alpha2":"mn","English":"Mongolian"},{"alpha2":"mr","English":"Marathi"},{"alpha2":"ms","English":"Malay"},{"alpha2":"mt","English":"Maltese"},{"alpha2":"my","English":"Burmese"},{"alpha2":"na","English":"Nauru"},{"alpha2":"nb","English":"Bokmål, Norwegian; Norwegian Bokmål"},{"alpha2":"nd","English":"Ndebele, North; North Ndebele"},{"alpha2":"ne","English":"Nepali"},{"alpha2":"ng","English":"Ndonga"},{"alpha2":"nl","English":"Dutch; Flemish"},{"alpha2":"nn","English":"Norwegian Nynorsk; Nynorsk, Norwegian"},{"alpha2":"no","English":"Norwegian"},{"alpha2":"nr","English":"Ndebele, South; South Ndebele"},{"alpha2":"nv","English":"Navajo; Navaho"},{"alpha2":"ny","English":"Chichewa; Chewa; Nyanja"},{"alpha2":"oc","English":"Occitan (post 1500); Provençal"},{"alpha2":"oj","English":"Ojibwa"},{"alpha2":"om","English":"Oromo"},{"alpha2":"or","English":"Oriya"},{"alpha2":"os","English":"Ossetian; Ossetic"},{"alpha2":"pa","English":"Panjabi; Punjabi"},{"alpha2":"pi","English":"Pali"},{"alpha2":"pl","English":"Polish"},{"alpha2":"ps","English":"Pushto; Pashto"},{"alpha2":"pt","English":"Portuguese"},{"alpha2":"qu","English":"Quechua"},{"alpha2":"rm","English":"Romansh"},{"alpha2":"rn","English":"Rundi"},{"alpha2":"ro","English":"Romanian; Moldavian; Moldovan"},{"alpha2":"ru","English":"Russian"},{"alpha2":"rw","English":"Kinyarwanda"},{"alpha2":"sa","English":"Sanskrit"},{"alpha2":"sc","English":"Sardinian"},{"alpha2":"sd","English":"Sindhi"},{"alpha2":"se","English":"Northern Sami"},{"alpha2":"sg","English":"Sango"},{"alpha2":"si","English":"Sinhala; Sinhalese"},{"alpha2":"sk","English":"Slovak"},{"alpha2":"sl","English":"Slovenian"},{"alpha2":"sm","English":"Samoan"},{"alpha2":"sn","English":"Shona"},{"alpha2":"so","English":"Somali"},{"alpha2":"sq","English":"Albanian"},{"alpha2":"sr","English":"Serbian"},{"alpha2":"ss","English":"Swati"},{"alpha2":"st","English":"Sotho, Southern"},{"alpha2":"su","English":"Sundanese"},{"alpha2":"sv","English":"Swedish"},{"alpha2":"sw","English":"Swahili"},{"alpha2":"ta","English":"Tamil"},{"alpha2":"te","English":"Telugu"},{"alpha2":"tg","English":"Tajik"},{"alpha2":"th","English":"Thai"},{"alpha2":"ti","English":"Tigrinya"},{"alpha2":"tk","English":"Turkmen"},{"alpha2":"tl","English":"Tagalog"},{"alpha2":"tn","English":"Tswana"},{"alpha2":"to","English":"Tonga (Tonga Islands)"},{"alpha2":"tr","English":"Turkish"},{"alpha2":"ts","English":"Tsonga"},{"alpha2":"tt","English":"Tatar"},{"alpha2":"tw","English":"Twi"},{"alpha2":"ty","English":"Tahitian"},{"alpha2":"ug","English":"Uighur; Uyghur"},{"alpha2":"uk","English":"Ukrainian"},{"alpha2":"ur","English":"Urdu"},{"alpha2":"uz","English":"Uzbek"},{"alpha2":"ve","English":"Venda"},{"alpha2":"vi","English":"Vietnamese"},{"alpha2":"vo","English":"Volapük"},{"alpha2":"wa","English":"Walloon"},{"alpha2":"wo","English":"Wolof"},{"alpha2":"xh","English":"Xhosa"},{"alpha2":"yi","English":"Yiddish"},{"alpha2":"yo","English":"Yoruba"},{"alpha2":"za","English":"Zhuang; Chuang"},{"alpha2":"zh","English":"Chinese"},{"alpha2":"zu","English":"Zulu"}]
+},{}]},{},[939])(939)
 });
 //# sourceMappingURL=jserator.js.map

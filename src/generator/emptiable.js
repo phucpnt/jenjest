@@ -1,11 +1,11 @@
 import faker from 'faker';
 import makeFluentInterface from './make-fluent-interface';
 
-export default makeFluentInterface(({or= null, val= null, chance=30}) => {
+export default makeFluentInterface(({or= null, emptyValue= null, chance=30}) => {
 
   var isEmpty = chance > faker.random.number({min: 1, max:100});
   if(isEmpty){
-    return val;
+    return emptyValue;
   }
   else{
     return typeof(or.$) !=='undefined' ? or.$ : or;
@@ -14,5 +14,5 @@ export default makeFluentInterface(({or= null, val= null, chance=30}) => {
 }, {
   chance: 'percent will return empty value',
   or: 'if not empty then return the value',
-  val: 'empty value returned'
+  emptyValue: 'empty value returned'
 })

@@ -55,12 +55,25 @@ export default () => (next) => (...availFuns) => (src) => {
  */
 function directive() {
 
-  let repeatIndicatorRegex = /['"]repeat\((\d+),?\s*(\d+)?\)['"]\s*:\s*\{/ig;
+  /**
+   * match: 'repeat(0, 1): {...}'
+   */
+  let repeatIndicatorObjectRegex = /['"]repeat\((\d+),?\s*(\d+)?\)['"]\s*:\s*\{/ig;
+
+  /**
+   * match:
+   * 'repeat(0, 1): objectId().$'
+   *
+   * or 'repeat(0, 1): "person().firstName().$ person().lastName().$"'
+   * TODO
+   */
+  let repeatIndicatorUnitRegex = /['"]repeat\((\d+),?\s*(\d+)?\)['"]\s*:[^\{",]+/ig;
+
   let repeatArrayRegex = /\[\s*\{\s*['"]repeat\((\d+),?\s*(\d+)?\)['"]\s*:\s*(\d+)\s*\}\s*\]/ig;
 
   let parsedBlocks = [];
   let cleanParsedBlocks = [];
-  let parser = makeBlockParser(repeatIndicatorRegex, makePlaceHolder);
+  let parser = makeBlockParser(repeatIndicatorObjectRegex, makePlaceHolder);
 
   function makePlaceHolder(index) {
     return index;

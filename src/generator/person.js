@@ -34,9 +34,15 @@ function name({gender}) {
 function address() {
 
   return {
-    city: () => ( faker.address.city()),
-    country: () => ( faker.address.country()),
-    countryCode: () => ( faker.address.countryCode())
+    email: () => faker.internet.email(),
+    website: () => faker.internet.url(),
+    phone: () => faker.phone.phoneNumber(),
+    city: () => faker.address.city(),
+    streetAddress: () => faker.address.streetAddress(),
+    country: () => faker.address.country(),
+    countryCode: () => faker.address.countryCode(),
+    zip: () => faker.address.zipCode(),
+    state: () => faker.address.state(),
   }
 
 }
