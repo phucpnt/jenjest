@@ -25102,7 +25102,7 @@ module["exports"] = [
   "გუგულა",
   "გუგული",
   "გუგუნა",
-  "გუკ���",
+  "გუკა",
   "გულარისა",
   "გულვარდი",
   "გულვარდისა",
@@ -62540,6 +62540,18 @@ var second = 1000;
 
 exports.default = function () {
   return {
+    now: (0, _makeFluentInterface2.default)(function (_ref) {
+      var _ref$format = _ref.format;
+      var format = _ref$format === undefined ? null : _ref$format;
+
+      var nowDate = (0, _moment2.default)();
+      if (format !== null) {
+        return nowDate.format(format);
+      }
+      return nowDate;
+    }, {
+      format: 'format return date'
+    }),
     inPast: (0, _makeFluentInterface2.default)(inPast, {
       format: 'format return date'
     }),
@@ -62556,9 +62568,9 @@ exports.default = function () {
 
 function inPast() {
   var interval = arguments.length <= 0 || arguments[0] === undefined ? '1day' : arguments[0];
-  var _ref = arguments[1];
-  var _ref$format = _ref.format;
-  var format = _ref$format === undefined ? null : _ref$format;
+  var _ref2 = arguments[1];
+  var _ref2$format = _ref2.format;
+  var format = _ref2$format === undefined ? null : _ref2$format;
 
   var result = new Date(Date.now() - randomIntervalIn(interval));
   if (format !== null) {
@@ -62569,9 +62581,9 @@ function inPast() {
 
 function inFuture() {
   var interval = arguments.length <= 0 || arguments[0] === undefined ? '1day' : arguments[0];
-  var _ref2 = arguments[1];
-  var _ref2$format = _ref2.format;
-  var format = _ref2$format === undefined ? null : _ref2$format;
+  var _ref3 = arguments[1];
+  var _ref3$format = _ref3.format;
+  var format = _ref3$format === undefined ? null : _ref3$format;
 
   var result = new Date(Date.now() + randomIntervalIn(interval));
   if (format !== null) {
@@ -62580,13 +62592,13 @@ function inFuture() {
   return result;
 }
 
-function between(_ref3) {
-  var _ref3$from = _ref3.from;
-  var from = _ref3$from === undefined ? 'now' : _ref3$from;
-  var _ref3$to = _ref3.to;
-  var to = _ref3$to === undefined ? 'tomorrow' : _ref3$to;
-  var _ref3$format = _ref3.format;
-  var format = _ref3$format === undefined ? null : _ref3$format;
+function between(_ref4) {
+  var _ref4$from = _ref4.from;
+  var from = _ref4$from === undefined ? 'now' : _ref4$from;
+  var _ref4$to = _ref4.to;
+  var to = _ref4$to === undefined ? 'tomorrow' : _ref4$to;
+  var _ref4$format = _ref4.format;
+  var format = _ref4$format === undefined ? null : _ref4$format;
 
   var dateFrom = parseDateStr(from);
   var dateTo = parseDateStr(to);

@@ -16,6 +16,15 @@ const intervalSecond = {
 const second = 1000;
 
 export default () => ({
+  now: makeFluentInterface(({format=null}) => {
+    const nowDate = moment();
+    if(format!== null){
+      return nowDate.format(format);
+    }
+    return nowDate;
+  }, {
+    format: 'format return date'
+  }),
   inPast: makeFluentInterface(inPast, {
     format: 'format return date'
   }),
