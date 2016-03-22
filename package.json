@@ -3,6 +3,10 @@
   "version": "0.1.0",
   "description": "Json Generator Engine",
   "main": "dist/jserator.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/phucpnt/jserator.git"
+  },
   "scripts": {
     "test": "mocha",
     "test-dev": "mocha --watch",
