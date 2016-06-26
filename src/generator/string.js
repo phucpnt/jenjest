@@ -1,4 +1,4 @@
-import makeFluentInterface from './make-fluent-interface';
+import makeFluentInterface from '../helper/make-fluent-interface';
 import faker from 'faker';
 
 export default makeFluentInterface({

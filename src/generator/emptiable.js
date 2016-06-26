@@ -1,5 +1,5 @@
 import faker from 'faker';
-import makeFluentInterface from './make-fluent-interface';
+import makeFluentInterface from '../helper/make-fluent-interface';
 
 export default makeFluentInterface(({or= null, emptyValue= null, chance=30}) => {
 

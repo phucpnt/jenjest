@@ -1,4 +1,4 @@
-import makeFluentInterface from './make-fluent-interface';
+import makeFluentInterface from '../helper/make-fluent-interface';
 import countries from '../resource/countries.json';
 import languages from '../resource/languages.json';
 

@@ -1,5 +1,5 @@
 import faker from 'faker';
-import makeFluentInterface, {makeTerminateWith$} from './make-fluent-interface';
+import makeFluentInterface, {makeTerminateWith$} from '../helper/make-fluent-interface';
 
 export default makeFluentInterface(({inList, between, to, noDuplicate = true}) => {
   const randAmount = faker.random.number({min: between, max: to});

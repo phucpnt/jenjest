@@ -3,7 +3,7 @@
  */
 
 import _ from 'lodash';
-import {makeTerminateWith$} from '../generator/make-fluent-interface';
+import {makeTerminateWith$} from '../helper/make-fluent-interface';
 
 var fieldGenPattern = /\{\{\s*(.*?)\s*\}\}/g;
 var fnNamePattern = /(.+?)\(.*?\)/i;

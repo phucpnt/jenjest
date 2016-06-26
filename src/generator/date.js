@@ -1,7 +1,7 @@
 import makeFluentInterface, {
   makeTerminateWith$
 }
-from './make-fluent-interface';
+from '../helper/make-fluent-interface';
 import moment from 'moment';
 import faker from 'faker';
 

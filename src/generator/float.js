@@ -1,7 +1,7 @@
 /**
  * Created by Phuc on 10/7/2015.
  */
-import makeFluentInterface from './make-fluent-interface';
+import makeFluentInterface from '../helper/make-fluent-interface';
 
 var numeral = require('numeral');
 
