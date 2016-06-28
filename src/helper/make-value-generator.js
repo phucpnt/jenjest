@@ -14,16 +14,16 @@ import resource from '../generator/resource';
 
 export default function (){
   return makeValueGenerateCompile({
-    objectId: objectId,
-    float: genFloat,
-    person: person,
-    index: genIndex,
-    date: gDate,
-    pickOne,
-    gString,
-    emptiable,
-    pick,
-    img,
-    resource,
+    j$objectId: objectId,
+    j$float: genFloat,
+    j$person: person,
+    j$index: genIndex,
+    j$date: gDate,
+    j$pickOne,
+    j$string: gString,
+    j$emptiable: emptiable,
+    j$pick: pick,
+    j$img,
+    j$resource,
   });
 }
