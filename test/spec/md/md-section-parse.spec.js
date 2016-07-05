@@ -3,17 +3,23 @@
  */
 
 import {expect} from 'chai';
-import Markdown from 'markdown-it';
+import parseMd2Tree from '../../../src/md/parse-section-stream';
 
 describe.only('markdown section parser', () => {
   
   const sampleMD = require('../../resources/md/simple.md');
 
   it('Given valid md String, it should parse correctly', () => {
-    const parsedTokenList = Markdown().parse(sampleMD, {});
-    
-    console.log(parsedTokenList);
-    expect(1).to.equal(1);
+    const pickFocusToken = token => {
+      if(token.type ==='fence' && token.tag === 'code' && token.info==='javascript'){
+        return token.content;
+      }
+      return null;
+    };
+    const tree = parseMd2Tree(pickFocusToken, sampleMD);
+    console.log(tree);
+    expect(tree).to.have.deep.property('[0].sectionPath', 'section_1');
+    expect(tree).to.have.deep.property('[1].sectionPath', 'section_2.section_2_1');
   })
   
 

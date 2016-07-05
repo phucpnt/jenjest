@@ -1,22 +1,24 @@
+
 import Markdown from 'markdown-it';
+import _ from 'lodash';
 
 const HEADING_OPEN = 'heading_open';
 const HEADING_CLOSE = 'heading_close';
 const INLINE = 'inline';
 
-function mdToObject(mdString) {
+export default function mdToTree(pickFocusToken = () =>null, mdString) {
   const parsedTokenList = Markdown().parse(mdString, {});
-  let genObj = {};
   const availSections = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'];
 
-  function grapHeading(tokenList) {
+  function buildSectionTree(tokenList) {
     let potentialInSection = false;
     let headingOpen = false;
     let headingClose = false;
     let currentSection = null;
     let sectionPath = [];
 
-    tokenList.reduce((accum, token) => {
+    console.log('tokenList =>', tokenList);
+    return tokenList.reduce((tree, token) => {
       if (token.type === HEADING_OPEN) {
         headingOpen = true;
       }
@@ -31,84 +33,41 @@ function mdToObject(mdString) {
       if (headingOpen && headingClose) {
         potentialInSection = true;
         headingOpen = headingClose = false;
+        sectionPath = computeSectionPath(sectionPath, {tag: token.tag, name: currentSection}, token);
+        console.log(sectionPath);
       }
 
       if (potentialInSection && currentSection) {
-        sectionPath = computeSectionPath(sectionPath, token);
-        accum[currentSection] = [];
+        const focusToken = pickFocusToken(token);
+        if (focusToken) {
+          tree.push({ sectionPath: sectionPath.map(({name}) => _.snakeCase(name)).join('.'), focusToken });
+        }
       }
 
-      return accum;
-    }, {});
+      return tree;
+    }, []);
   }
 
   function getSectionOrder(tag) {
-    return availSections.findIndex(tag);
+    return availSections.findIndex(item => item === tag);
   }
 
-  function computeSectionPath(sectionPath = [], token) {
+  function computeSectionPath(sectionPath = [], section, token) {
     if (!sectionPath.length) {
-      return [token.tag];
+      return [section];
     }
 
     const path = [].concat(sectionPath);
-    const foundIndex = path.findIndex(tag => getSectionOrder(token.tag) < getSectionOrder(tag));
+    const foundIndex = path.findIndex(({tag, name}) => getSectionOrder(token.tag) <= getSectionOrder(tag));
     if (foundIndex === -1) {
-      path.push(token.tag);
+      path.push(section);
     } else {
-      path.splice(foundIndex, path.length - foundIndex, token.tag);
+      path.splice(foundIndex, path.length - foundIndex, section);
     }
 
     return path;
   }
+
+  return buildSectionTree(parsedTokenList);
 }
-
-// function originAccumParseSection(currentSection, accum, token) {
-//   return accum;
-// }
-
-// const makeProcessMD = (parseSection, initialData = {
-//   request: [],
-//   requestData: []
-// }) => {
-//
-//   const finalParseSection = parseSection ? parseSection(originAccumParseSection) : originAccumParseSection;
-//
-//   return (schemaStr) => {
-//     const parsedTokenList = Markdown().parse(schemaStr, {});
-//
-//     let potentialInSection = false;
-//     let headingOpen = false;
-//     let headingClose = false;
-//     let currentSection = null;
-//
-//     const apiTestSchema = parsedTokenList.reduce((acc, token) => {
-//
-//       if (token.type === 'heading_open') {
-//         headingOpen = true;
-//       }
-//       if (token.type === 'heading_close') {
-//         headingClose = true;
-//       }
-//
-//       if (headingOpen && token.type === 'inline') {
-//         currentSection = token.content;
-//       }
-//
-//       if (headingOpen && headingClose) {
-//         potentialInSection = true;
-//         headingOpen = headingClose = false;
-//       }
-//
-//       if (potentialInSection && currentSection) {
-//         console.log(currentSection);
-//         return finalParseSection(currentSection, acc, token);
-//       }
-//       return acc;
-//
-//     }, Immutable.fromJS(initialData));
-//
-//     return apiTestSchema;
-//   };
-// };
 

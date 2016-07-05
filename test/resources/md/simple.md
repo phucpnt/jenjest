@@ -1,5 +1,11 @@
 # Section 1
-abc
+
+```javascript
+({
+  data: 123,
+  xyz: 444,
+})
+```
 
 # Section 2
 
@@ -7,3 +13,9 @@ abc
 
 xyz
 
+```javascript
+({
+  data2: 123,
+  xyz2: 444,
+})
+```
