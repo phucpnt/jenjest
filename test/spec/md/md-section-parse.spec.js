@@ -3,7 +3,7 @@
  */
 
 import {expect} from 'chai';
-import parseMd2Tree from '../../../src/md/parse-section-stream';
+import parseMd2Tree from '../../../src/md/parse-section-tree';
 
 describe.only('markdown section parser', () => {
   
