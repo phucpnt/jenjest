@@ -5,8 +5,8 @@
 import {expect} from 'chai';
 import parseMd2Tree from '../../../src/md/parse-section-tree';
 
-describe.only('markdown section parser', () => {
-  
+describe('markdown section parser', () => {
+
   const sampleMD = require('../../resources/md/simple.md');
 
   it('Given valid md String, it should parse correctly', () => {
@@ -21,6 +21,6 @@ describe.only('markdown section parser', () => {
     expect(tree).to.have.deep.property('[0].sectionPath', 'section_1');
     expect(tree).to.have.deep.property('[1].sectionPath', 'section_2.section_2_1');
   })
-  
+
 
 });

@@ -1,5 +1,6 @@
-# Section 1
+# Title of this document will be ignore in building section tree
 
+## Section 1
 ```javascript
 ({
   data: 123,
@@ -7,9 +8,9 @@
 })
 ```
 
-# Section 2
+## Section 2
 
-## Section 2.1
+### Section 2.1
 
 xyz
 

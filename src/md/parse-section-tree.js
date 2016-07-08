@@ -8,7 +8,7 @@ const INLINE = 'inline';
 
 export default function mdToTree(pickFocusToken = () =>null, mdString) {
   const parsedTokenList = Markdown().parse(mdString, {});
-  const availSections = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'];
+  const availSections = ['h2', 'h3', 'h4', 'h5', 'h6'];
 
   function buildSectionTree(tokenList) {
     let potentialInSection = false;
@@ -17,7 +17,6 @@ export default function mdToTree(pickFocusToken = () =>null, mdString) {
     let currentSection = null;
     let sectionPath = [];
 
-    console.log('tokenList =>', tokenList);
     return tokenList.reduce((tree, token) => {
       if (token.type === HEADING_OPEN) {
         headingOpen = true;
@@ -30,11 +29,14 @@ export default function mdToTree(pickFocusToken = () =>null, mdString) {
         currentSection = token.content;
       }
 
-      if (headingOpen && headingClose) {
+      if(headingOpen && headingClose && availSections.indexOf(token.tag) === -1){
+        headingOpen = headingClose = false;
+      }
+
+      if (headingOpen && headingClose && availSections.indexOf(token.tag) >= 0) {
         potentialInSection = true;
         headingOpen = headingClose = false;
         sectionPath = computeSectionPath(sectionPath, {tag: token.tag, name: currentSection}, token);
-        console.log(sectionPath);
       }
 
       if (potentialInSection && currentSection) {
@@ -70,4 +72,3 @@ export default function mdToTree(pickFocusToken = () =>null, mdString) {
 
   return buildSectionTree(parsedTokenList);
 }
-
