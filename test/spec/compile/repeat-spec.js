@@ -1,5 +1,6 @@
 /**
  * Created by Phuc on 12/15/2015.
+ * @deprecated use the generator `repeat` instead
  */
 
 import _ from 'lodash';

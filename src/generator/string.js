@@ -7,11 +7,16 @@ export default makeFluentInterface({
   paragraph
 }, {
   amount: 'amount of item to be generated',
+  seed: 'put seed string randomly inside the produced string',
 });
 
 
-function word({amount = 3}){
-  return faker.lorem.words(amount).join(' ');
+function word({amount = 3, seed = null}){
+  let finalWords = faker.lorem.words(amount);
+  if(seed){
+    finalWords = putSeedString(seed, finalWords);
+  }
+  return finalWords;
 }
 
 function sentence({amount = 3}){
@@ -20,4 +25,9 @@ function sentence({amount = 3}){
 
 function paragraph({amount = 3}){
   return faker.lorem.paragraphs(amount);
+}
+
+function putSeedString(seed, words){
+  const seedPos = Math.floor(Math.random() * words.length);
+  return [words.slice(0, seedPos), seed, words.slice(seedPos)].join('');
 }

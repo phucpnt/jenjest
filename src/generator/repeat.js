@@ -1,8 +1,8 @@
 import _ from 'lodash';
 import makeFluentInterface from '../helper/make-fluent-interface';
 
-export default makeFluentInterface((min = 1, max = null, { data }) => {
-      if (typeof data != 'function') {
+export default makeFluentInterface((min = 1, { data, max }) => {
+      if (typeof data !== 'function') {
         throw new Error('Data should be function for generating concrete value');
       }
       let numRepeat = min;
@@ -11,6 +11,7 @@ export default makeFluentInterface((min = 1, max = null, { data }) => {
       }
       return _.times(numRepeat, data);
     }, {
-      data: 'data schema for generate repeat object'
+      data: 'data schema for generate repeat object',
+      max: 'max number of list of data',
     }
 );
