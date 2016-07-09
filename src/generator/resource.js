@@ -1,6 +1,6 @@
 import makeFluentInterface from '../helper/make-fluent-interface';
-import countries from '../resource/countries.json';
-import languages from '../resource/languages.json';
+import countries from '../../resource/countries.json';
+import languages from '../../resource/languages.json';
 
 export default makeFluentInterface(({
   country,
